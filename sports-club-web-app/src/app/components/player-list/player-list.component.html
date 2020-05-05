@@ -9,7 +9,7 @@
           <th scope="col">Player ID</th>
           <th scope="col">Name</th>
           <th scope="col">Email</th>
-          <th scope="col">Designation</th>
+          <th scope="col">Role</th>
           <th scope="col">Phone No</th>
           <th scope="col center">Update</th>
         </tr>
@@ -19,7 +19,7 @@
           <th scope="row">{{player._id}}</th>
           <td>{{player.name}}</td>
           <td>{{player.email}}</td>
-          <td>{{player.designation}}</td>
+          <td>{{player.role}}</td>
           <td>{{player.phoneNumber}}</td>
           <td class="text-center edit-block">
             <span class="edit" [routerLink]="['/edit-player/', player._id]">

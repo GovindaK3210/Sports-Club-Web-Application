@@ -11,7 +11,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 export class PlayerCreateComponent implements OnInit {
   submitted = false;
   playerForm: FormGroup;
-  PlayerProfile:any = ['Finance', 'BDM', 'HR', 'Sales', 'Admin']
+  PlayerProfile: any = ['Player', 'Admin', 'Coach']
   
   constructor(
     public fb: FormBuilder,
@@ -28,14 +28,14 @@ export class PlayerCreateComponent implements OnInit {
     this.playerForm = this.fb.group({
       name: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
-      designation: ['', [Validators.required]],
+      role: ['', [Validators.required]],
       phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]+$')]]
     })
   }
 
-  // Choose designation with select dropdown
+  // Choose role with select dropdown
   updateProfile(e){
-    this.playerForm.get('designation').setValue(e, {
+    this.playerForm.get('role').setValue(e, {
       onlySelf: true
     })
   }

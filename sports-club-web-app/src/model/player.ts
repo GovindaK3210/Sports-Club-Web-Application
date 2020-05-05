@@ -2,6 +2,6 @@
 export class Player {
     name: string;
     email: string;
-    designation: string;
+    role: string;
     phoneNumber: number;
  }

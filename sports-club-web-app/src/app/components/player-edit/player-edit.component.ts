@@ -13,7 +13,7 @@ export class PlayerEditComponent implements OnInit {
   submitted = false;
   editForm: FormGroup;
   playerData: Player[];
-  PlayerProfile: any = ['Finance', 'BDM', 'HR', 'Sales', 'Admin']
+  PlayerProfile: any = ['Player', 'Admin', 'Coach']
 
   constructor(
     public fb: FormBuilder,
@@ -51,7 +51,7 @@ export class PlayerEditComponent implements OnInit {
       this.editForm.setValue({
         name: data['name'],
         email: data['email'],
-        designation: data['designation'],
+        role: data['role'],
         phoneNumber: data['phoneNumber'],
       });
     });
@@ -61,7 +61,7 @@ export class PlayerEditComponent implements OnInit {
     this.editForm = this.fb.group({
       name: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
-      designation: ['', [Validators.required]],
+      role: ['', [Validators.required]],
       phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]+$')]]
     })
   }
