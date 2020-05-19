@@ -10,6 +10,8 @@ import { PlayerListComponent } from './components/player-list/player-list.compon
 import { HttpClientModule } from '@angular/common/http';
 import { ApiService } from './service/api.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { PlayerLoginComponent } from './components/player-login/player-login.component';
 
 
 @NgModule({
@@ -17,7 +19,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AppComponent,
     PlayerCreateComponent,
     PlayerEditComponent,
-    PlayerListComponent
+    PlayerListComponent,
+    NavbarComponent,
+    PlayerLoginComponent
   ],
   imports: [
     BrowserModule,

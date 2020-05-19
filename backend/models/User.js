@@ -13,6 +13,9 @@ let User = new Schema({
    role: {
       type: String
    },
+   password: {
+      type: String
+   },
    phoneNumber: {
       type: Number
    },
@@ -35,11 +38,11 @@ let User = new Schema({
    end_time:
    {
       type: String
+   },
+   games_and_ranking: {
+      type: [[String]]
    }
-
-
-
-
+   
 }, {
    collection: 'users'
 })
