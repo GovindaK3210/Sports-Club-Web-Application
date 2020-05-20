@@ -11,7 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ApiService } from './service/api.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { PlayerLoginComponent } from './components/player-login/player-login.component';
+import { UserLoginComponent } from './components/user-login/user-login.component';
 
 
 @NgModule({
@@ -21,7 +21,7 @@ import { PlayerLoginComponent } from './components/player-login/player-login.com
     PlayerEditComponent,
     PlayerListComponent,
     NavbarComponent,
-    PlayerLoginComponent
+    UserLoginComponent
   ],
   imports: [
     BrowserModule,

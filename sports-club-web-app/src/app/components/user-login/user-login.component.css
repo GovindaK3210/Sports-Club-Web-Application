@@ -1,0 +1,41 @@
+
+  .landing_image {
+      position:relative;
+  }
+  img
+  {
+    width: 100%;
+    height: auto;
+  }
+
+  .login_card {
+      position:absolute;
+      color:black;
+      width: 320px;
+      height: 350px;
+      padding-top:20px;
+      padding-left:20px;
+      padding-right:20px;
+
+      background-color: gainsboro;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius:6px;
+      background: rgb(76,162,219);
+      background: radial-gradient(circle, rgba(76,162,219,1) 29%, rgba(53,132,203,1) 100%);
+  }
+
+  button {
+      float:right;
+  }
+
+  .login_card .heading {
+      font-size:30px;
+      color: #F5F5F5;
+  }
+
+  a {
+    color: #F5F5F5;
+  }
+  
