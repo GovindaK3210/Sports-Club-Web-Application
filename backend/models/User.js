@@ -20,10 +20,10 @@ let User = new Schema({
       type: Number
    },
    games_of_interest: {
-      type: String
+      type: [String]
    },
    games_ranking: {
-      type: String
+      type: [String]
    },
    games_priority: {
       type: String
@@ -38,9 +38,6 @@ let User = new Schema({
    end_time:
    {
       type: String
-   },
-   games_and_ranking: {
-      type: [[String]]
    }
    
 }, {
