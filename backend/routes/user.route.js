@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const userRoute = express.Router();
 
+
 // Player model
 let User = require('../models/User');
 
@@ -16,6 +17,9 @@ userRoute.route('/create').post((req, res, next) => {
   })
 });
 
+
+
+
 // Get All Users
 userRoute.route('/').get((req, res) => {
   User.find((error, data) => {
@@ -26,6 +30,7 @@ userRoute.route('/').get((req, res) => {
     }
   })
 })
+
 
 // Get single User
 userRoute.route('/read/:id').get((req, res) => {
