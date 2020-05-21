@@ -7,11 +7,16 @@ import { PlayerCreateComponent } from './components/player-create/player-create.
 import { PlayerEditComponent } from './components/player-edit/player-edit.component';
 import { PlayerListComponent } from './components/player-list/player-list.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ApiService } from './service/api.service';
+import { AuthService } from './service/auth.service';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { UserLoginComponent } from './components/user-login/user-login.component';
+
+import { AuthInterceptor } from './interceptors/jwt_interceptor';
+
 
 
 @NgModule({
@@ -30,7 +35,7 @@ import { UserLoginComponent } from './components/user-login/user-login.component
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [ApiService],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, AuthService, ApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

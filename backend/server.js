@@ -4,6 +4,8 @@ let express = require('express'),
    cors = require('cors'),
    bodyParser = require('body-parser'),
    dbConfig = require('./database/db');
+const expressJwt = require('express-jwt');
+const fs = require('fs');
 
 // Connecting with mongo db
 mongoose.Promise = global.Promise;
@@ -21,6 +23,8 @@ mongoose.connect(dbConfig.db, {
 const userRoute = require('../backend/routes/user.route')
 const practiceSessionRoute = require('../backend/routes/practicesession.route')
 const attendanceRoute = require('../backend/routes/attendance.route')
+const loginRoute = require('../backend/routes/login.route')
+
 
 
 const app = express();
@@ -31,9 +35,26 @@ app.use(bodyParser.urlencoded({
 app.use(cors()); 
 app.use(express.static(path.join(__dirname, 'dist/mean-stack-crud-app')));
 app.use('/', express.static(path.join(__dirname, 'dist/mean-stack-crud-app')));
+
+
+
+
+const RSA_PUBLIC_KEY = fs.readFileSync('./JWT_KEY/jwtRS256.key.pub');
+const checkIfAuthenticated = expressJwt({
+    secret: RSA_PUBLIC_KEY
+}); 
+
+app.use('/login', loginRoute);
+
+// DISABLE THIS IF YOU WANT TO TEST API USING TOOL
+// THIS IS BACK END AUTHORIZATION
+app.use(checkIfAuthenticated);
+
+
 app.use('/user', userRoute);
 app.use('/practice-session', practiceSessionRoute);
 app.use('/attendance', attendanceRoute);
+
 
 
 
