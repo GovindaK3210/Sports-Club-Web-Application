@@ -12,7 +12,7 @@ img
     position:absolute;
     color:black;
     width: 400px;
-    height: 600px;
+    height: 700px;
     padding-top:20px;
     padding-left:20px;
     padding-right:20px;
@@ -27,10 +27,6 @@ img
     background: radial-gradient(circle, rgba(76,162,219,1) 29%, rgba(53,132,203,1) 100%);
 }
 
-button {
-    float:right;
-}
-
 .login_card .heading {
     font-size:35px;
     color: #F5F5F5;
@@ -38,4 +34,12 @@ button {
 
 a {
   color: #F5F5F5;
+}
+
+.div-inline{
+  display:inline-block;
+}
+
+a.dropdown-item{
+  color: black;
 }
