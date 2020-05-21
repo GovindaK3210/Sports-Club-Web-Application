@@ -14,7 +14,6 @@ let Attendance = new Schema({
        type: String
    }
    
-   
 }, {
    collection: 'Attendance'
 })

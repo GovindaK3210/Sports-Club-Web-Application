@@ -38,6 +38,30 @@ let User = new Schema({
    end_time:
    {
       type: String
+   },
+   game1:{
+      type: String
+   },
+   ranking1:{
+      type: String
+   },
+   game2:{
+      type: String
+   },
+   ranking2:{
+      type: String
+   },
+   game3:{
+      type: String
+   },
+   ranking3:{
+      type: String
+   },
+   game4:{
+      type: String
+   },
+   ranking4:{
+      type: String
    }
    
 }, {
