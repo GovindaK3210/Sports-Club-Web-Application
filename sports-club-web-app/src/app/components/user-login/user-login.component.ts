@@ -35,7 +35,7 @@ export class UserLoginComponent implements OnInit {
                 .subscribe(
                     (res) => {
                         console.log("User is logged in");
-                        this.router.navigateByUrl('/players-list');
+                        this.router.navigateByUrl('/player-dashboard');
                     },
                     (error) => {
                       console.log(error);

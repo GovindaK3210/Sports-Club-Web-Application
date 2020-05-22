@@ -16,6 +16,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { UserLoginComponent } from './components/user-login/user-login.component';
 
 import { AuthInterceptor } from './interceptors/jwt_interceptor';
+import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 
 
@@ -26,7 +28,9 @@ import { AuthInterceptor } from './interceptors/jwt_interceptor';
     PlayerEditComponent,
     PlayerListComponent,
     NavbarComponent,
-    UserLoginComponent
+    UserLoginComponent,
+    NotAuthorizedComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,

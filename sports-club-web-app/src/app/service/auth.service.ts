@@ -40,11 +40,24 @@ export class AuthService {
 
     localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()) );
+
+    localStorage.setItem('user_id', authResult.user_id);
+    localStorage.setItem('user_name', authResult.user_name);
+    localStorage.setItem('user_email', authResult.user_email);
+    localStorage.setItem('user_role', authResult.user_role);
+
+                
+
 }     
 
 logout() {
   localStorage.removeItem("id_token");
   localStorage.removeItem("expires_at");
+
+  localStorage.removeItem('user_id')
+  localStorage.removeItem('user_name')
+  localStorage.removeItem('user_email')
+  localStorage.removeItem('user_role')
 }
 
 public isLoggedIn() {
@@ -53,6 +66,22 @@ public isLoggedIn() {
 
 isLoggedOut() {
   return !this.isLoggedIn();
+}
+
+getUserRole() {
+  return localStorage.getItem("user_role");
+}
+
+getUserName() {
+  return localStorage.getItem("user_name");
+}
+
+getUserEmail() {
+  return localStorage.getItem("user_email");
+}
+
+getUserID() {
+  return localStorage.getItem("user_id");
 }
 
 getExpiration() {

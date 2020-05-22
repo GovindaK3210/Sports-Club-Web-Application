@@ -11,10 +11,10 @@
           <form [formGroup]="playerForm" (ngSubmit)="onSubmit()">
             <div class="form-group">
               <label for="inputName">Name</label>
-              <input class="form-control" type="text" formControlName="name" />
+              <input class="form-control" type="text" formControlName="name" [ngClass]="{ 'is-invalid': submitted && myForm.name.errors?.required }"/>
               <!-- error -->
               <div
-                class="invalid-feedback"
+                class=""
                 *ngIf="submitted && myForm.name.errors?.required"
               >
                 Name is required.
