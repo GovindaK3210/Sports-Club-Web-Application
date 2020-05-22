@@ -48,7 +48,8 @@ app.use('/login', loginRoute);
 
 // DISABLE THIS IF YOU WANT TO TEST API USING TOOL
 // THIS IS BACK END AUTHORIZATION
-app.use(checkIfAuthenticated);
+
+//app.use(checkIfAuthenticated);
 
 
 app.use('/user', userRoute);

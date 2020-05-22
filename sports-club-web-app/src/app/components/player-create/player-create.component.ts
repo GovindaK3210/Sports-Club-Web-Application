@@ -2,6 +2,7 @@ import { Router } from '@angular/router';
 import { ApiService } from './../../service/api.service';
 import { Component, OnInit, NgZone, HostBinding } from '@angular/core';
 import { FormArray, FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
+import { AuthService } from './../../service/auth.service';
 
 @Component({
   selector: 'app-player-create',
@@ -20,7 +21,8 @@ export class PlayerCreateComponent implements OnInit {
     public fb: FormBuilder,
     private router: Router,
     private ngZone: NgZone,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private authService: AuthService
   ) {
     this.mainForm();
   }
@@ -85,16 +87,30 @@ export class PlayerCreateComponent implements OnInit {
     this.submitted = true;
     if (!this.playerForm.valid) {
       console.log('Player creation unsuccessful!');
-      // console.log(this.playerForm.value);
+      
       return false;
     } else {
-      // console.log(this.playerForm.value);
+      const val = this.playerForm.value;
       this.apiService.createPlayer(this.playerForm.value).subscribe(
         (res) => {
           console.log('Player successfully created!')
-          this.ngZone.run(() => this.router.navigateByUrl('/players-list'))
+          if (val.email && val.password) {
+            this.authService.login(val.email, val.password)
+                .subscribe(
+                    (res) => {
+                        console.log("User is logged in");
+                        this.router.navigateByUrl('/player-dashboard');
+                    },
+                    (error) => {
+                      console.log(error);
+
+                    }
+                );
+        }
         }, (error) => {
           console.log(error);
+          // @ABID, here you can manually turn your EMAIL field invalid.
+          //because backend will return error here (in case of duplicate Email)
         });
     }
   }

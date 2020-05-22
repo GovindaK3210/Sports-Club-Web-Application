@@ -23,8 +23,7 @@ loginRoute.route('/').post((req, res,next) => {
       } else {
         
         if(data!=null){
-            console.log("DB pass: ",data.password);
-        console.log("User pass: ",req.body.password);
+           
 
         if(data.password==req.body.password)
         {
@@ -38,11 +37,14 @@ loginRoute.route('/').post((req, res,next) => {
 
             
             
-           
             //res.cookie("SESSIONID", jwtBearerToken, {httpOnly:true, secure:true});
             res.status(200).json({
                 idToken: jwtBearerToken, 
-                expiresIn: 120
+                expiresIn: 120,
+                user_id: data._id,
+                user_name: data.name,
+                user_email: data.email,
+                user_role: data.role
               });
             
         }

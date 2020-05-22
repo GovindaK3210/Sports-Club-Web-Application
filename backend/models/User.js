@@ -17,13 +17,7 @@ let User = new Schema({
       type: String
    },
    phoneNumber: {
-      type: Number
-   },
-   games_of_interest: {
-      type: [String]
-   },
-   games_ranking: {
-      type: [String]
+      type: String
    },
    games_priority: {
       type: String
