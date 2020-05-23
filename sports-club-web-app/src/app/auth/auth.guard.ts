@@ -37,6 +37,13 @@ export class AuthGuard implements CanActivate {
         }
       }
 
+      if(state.url=="/sessions-info") {
+        if(this.authService.getUserRole()!="player") {
+          this.router.navigate(['/not-authorized']);
+          return false;
+        }
+      }
+
         return true;
     }
   

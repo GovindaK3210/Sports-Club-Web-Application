@@ -21,7 +21,7 @@ const routes: Routes = [
   { path: 'create-player', component: PlayerCreateComponent },
   { path: 'user-login', component: UserLoginComponent},
   { path: 'not-authorized', component: NotAuthorizedComponent},
-  { path: 'sessions-info', component: SessionsInfoComponent}
+  { path: 'sessions-info', component: SessionsInfoComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({
