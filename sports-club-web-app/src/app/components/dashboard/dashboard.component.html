@@ -1,7 +1,94 @@
-<p>dashboard works!</p>
-<p>User ID: {{user_id}}</p>
-<p>User Name: {{user_name}}</p>
-<p>User Role: {{user_role}}</p>
-<p>User Email: {{user_email}}</p>
+<div class="container bg-dark text-light rounded mt-3 pt-4 pb-3 pl-5 pr-5">
+        <div class="row">
+          <div class="col">
+            <p class="font-weight-bold h3">DASHBOARD </p>
+            Username: {{user_name}}
+            <br/>
+            Email ID: {{user_email}}
+          </div>
+         
+        </div>
+
+        
+    
+</div>
+
+<div class="container bg-dark text-light rounded mt-2 pt-4 pb-3 pl-5 pr-5">
+        <div class="row">
+                <div class="col-8">
+                        <p class="font-weight-bold h5">SETUP</p>
+                        <br/>
+                        Select opponent ranking level
+                        <br/>
+                        <br/>
+
+                        <form [formGroup]="oppForm" (ngSubmit)="onOppFormSubmit()">
+                                <div class="form-group">
+                                <select
+                                class="custom-select form-control col-4"
+                                (change)="updateRanking($event.target.value)"
+                                formControlName="opponent_player_ranking"
+                               
+                              
+                            >
+                                <option
+                                *ngFor="let gamesRanking of GamesRanking"
+                                value="{{ gamesRanking }}"
+                                >{{ gamesRanking }}
+                                </option>
+                                </select>
+                              </div>
+
+                              
+
+                              <button type="submit" class="btn btn-primary custom_blue_bg col-4 ">Set</button>
+                        </form>
+                       
+                </div>
+                <div class="col-4">
+                        <p class="font-weight-bold h5">TIMINGS</p>
+                        <br/>
+                        Select your daily timings
+                        <br/>
+                        <br/>
+
+                            <form [formGroup]="timeForm" (ngSubmit)="onTimeFormSubmit()">
+                                <div class="form-group">
+                                  <label>Start Time: &nbsp;&nbsp;</label>
+                                  <input type="time" name="startTime" formControlName="startTime"
+                               
+                                  >
+                                  
+                                </div>
+                                <div class="form-group">
+                                        <label>End Time: &nbsp;&nbsp;&nbsp;</label>
+                                        <input type="time" name="endTime" formControlName="endTime"
+                                        
+                                        >
+
+                                        
+                                </div>
+
+                                <div
+                                class="text-danger"
+                                *ngIf="timeFormSubmitted && 
+                                (getTimeForm().startTime.errors?.required || getTimeForm().endTime.errors?.required || getTimeForm().startTime.errors?.pattern || getTimeForm().endTime.errors?.pattern)"
+                            >
+                                Enter valid times (HH:MM) AM/PM
+                </div>
+
+                                
+                               
+                                <button type="submit" class="btn btn-primary custom_blue_bg col-8">Set</button>
+                              </form>
+
+
+                </div>
+        </div>
+
+</div>
+      
+
+
 
  

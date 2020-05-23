@@ -31,7 +31,7 @@ loginRoute.route('/').post((req, res,next) => {
 
             const jwtBearerToken = jwt.sign({}, RSA_PRIVATE_KEY, {
                     algorithm: 'RS256',
-                    expiresIn: 120,
+                    expiresIn: 600,
                     subject: data._id.toString()
                 });
 
@@ -40,7 +40,7 @@ loginRoute.route('/').post((req, res,next) => {
             //res.cookie("SESSIONID", jwtBearerToken, {httpOnly:true, secure:true});
             res.status(200).json({
                 idToken: jwtBearerToken, 
-                expiresIn: 120,
+                expiresIn: 600,
                 user_id: data._id,
                 user_name: data.name,
                 user_email: data.email,

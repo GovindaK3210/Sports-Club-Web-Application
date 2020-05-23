@@ -13,8 +13,8 @@ export class PlayerCreateComponent implements OnInit {
   submitted = false;
   playerForm: FormGroup;
   // PlayerProfile: any = ['Player', 'Admin', 'Coach']
-  GamesName: String[] = ['Tennis', 'Badminton', 'Table tennis', 'Squash'];
-  GamesRanking: String[] = ['Beginner', 'Medium', 'Advance'];
+  GamesName: String[] = ['Tennis', 'Badminton', 'Table Tennis', 'Squash'];
+  GamesRanking: String[] = ['Beginner', 'Medium', 'Advanced'];
   numberOfGames: number = 1;
 
   constructor(

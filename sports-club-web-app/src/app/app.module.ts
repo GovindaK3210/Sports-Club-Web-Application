@@ -20,7 +20,8 @@ import { NotAuthorizedComponent } from './not-authorized/not-authorized.componen
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SessionsInfoComponent } from './components/sessions-info/sessions-info.component';
 
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,9 @@ import { SessionsInfoComponent } from './components/sessions-info/sessions-info.
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+	  ToastrModule.forRoot()
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, AuthService, ApiService],
   bootstrap: [AppComponent]

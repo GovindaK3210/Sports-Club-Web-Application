@@ -25,11 +25,11 @@ let User = new Schema({
    opponent_player_ranking: {
       type: String
    },
-   start_time: 
+   startTime: 
    {
       type: String
    },
-   end_time:
+   endTime:
    {
       type: String
    },
