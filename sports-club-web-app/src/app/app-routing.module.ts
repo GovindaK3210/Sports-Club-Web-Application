@@ -9,6 +9,7 @@ import { UserLoginComponent } from './components/user-login/user-login.component
 import { AuthGuard } from './auth/auth.guard';
 import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { SessionsInfoComponent } from './components/sessions-info/sessions-info.component';
 
 
 
@@ -19,7 +20,8 @@ const routes: Routes = [
   { path: 'player-dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
   { path: 'create-player', component: PlayerCreateComponent },
   { path: 'user-login', component: UserLoginComponent},
-  { path: 'not-authorized', component: NotAuthorizedComponent}
+  { path: 'not-authorized', component: NotAuthorizedComponent},
+  { path: 'sessions-info', component: SessionsInfoComponent}
 ];
 
 @NgModule({

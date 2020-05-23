@@ -55,6 +55,74 @@ export class ApiService {
     )
   }
 
+  //Practice sessions functions
+
+  baseUriPracticeSession:string = 'http://localhost:4000/practice-session';
+
+  //Create session
+  createSession(data): Observable<any> {
+    let url = `${this.baseUriPracticeSession}/create`;
+    return this.http.post(url, data)
+      .pipe(
+        catchError(this.errorMgmt)
+      )
+  }
+
+  // Get all sessions
+  getSessions() {
+    return this.http.get(`${this.baseUriPracticeSession}`);
+  }
+
+  // Get session by session id
+  getSessionBySessionID(id): Observable<any> {
+    let url = `${this.baseUriPracticeSession}/read/${id}`;
+    return this.http.get(url, {headers: this.headers}).pipe(
+      map((res: Response) => {
+        return res || {}
+      }),
+      catchError(this.errorMgmt)
+    )
+  }
+
+  // Update session by sesson id
+  updateSession(id, data): Observable<any> {
+    let url = `${this.baseUriPracticeSession}/update/${id}`;
+    return this.http.put(url, data, { headers: this.headers }).pipe(
+      catchError(this.errorMgmt)
+    )
+  }
+
+  // Delete session
+  deleteSession(id): Observable<any> {
+    let url = `${this.baseUriPracticeSession}/delete/${id}`;
+    return this.http.delete(url, { headers: this.headers }).pipe(
+      catchError(this.errorMgmt)
+    )
+  }
+  
+  // get session by playerID
+  getSessionByPlayerID(id): Observable<any> {
+    let url = `${this.baseUriPracticeSession}/read-by-playerid/${id}`;
+    return this.http.get(url, {headers: this.headers}).pipe(
+      map((res: Response) => {
+        return res || {}
+      }),
+      catchError(this.errorMgmt)
+    )
+  }
+
+
+  // get session by coachID
+  getSessionByCoachID(id): Observable<any> {
+    let url = `${this.baseUriPracticeSession}/read-by-coachid/${id}`;
+    return this.http.get(url, {headers: this.headers}).pipe(
+      map((res: Response) => {
+        return res || {}
+      }),
+      catchError(this.errorMgmt)
+    )
+  }
+
   // Error handling 
   errorMgmt(error: HttpErrorResponse) {
     let errorMessage = '';

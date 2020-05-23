@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+var ObjectId = require('mongoose').Types.ObjectId; 
 
 // Define collection and schema
 let PracticeSession = new Schema({
@@ -8,13 +9,13 @@ let PracticeSession = new Schema({
       type: String
    },
    player1_id: {
-      type: Number
+      type: ObjectId
    },
    player2_id: {
-      type: Number
+      type: ObjectId
    },
    coach_id: {
-      type: Number
+      type: ObjectId
    },
    game_court: {
       type: String

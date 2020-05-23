@@ -39,8 +39,8 @@ export class PlayerCreateComponent implements OnInit {
       password: ['', [Validators.required]],
       games_info: this.fb.array([
         this.fb.group({
-          game: [''],
-          ranking: ['']
+          game: ['', Validators.required],
+          ranking: ['', Validators.required]
         })
       ])
     })
@@ -56,8 +56,8 @@ export class PlayerCreateComponent implements OnInit {
     if (this.numberOfGames != this.GamesName.length) {
       this.numberOfGames += 1;
       this.games_info.push(this.fb.group({
-        game: [''],
-        ranking: ['']
+        game: ['', Validators.required],
+        ranking: ['', Validators.required]
       }))
     }
   }
@@ -82,12 +82,19 @@ export class PlayerCreateComponent implements OnInit {
     return this.playerForm.controls;
   }
 
+  //delete game selection
+  delete_game_info(index){
+    if (this.numberOfGames != 0) {
+      this.numberOfGames -= 1;
+      this.games_info.removeAt(index);
+    }
+  }
+
   //check validation and submit
   onSubmit() {
     this.submitted = true;
     if (!this.playerForm.valid) {
       console.log('Player creation unsuccessful!');
-      
       return false;
     } else {
       const val = this.playerForm.value;
@@ -103,14 +110,14 @@ export class PlayerCreateComponent implements OnInit {
                     },
                     (error) => {
                       console.log(error);
-
                     }
                 );
         }
         }, (error) => {
           console.log(error);
-          // @ABID, here you can manually turn your EMAIL field invalid.
-          //because backend will return error here (in case of duplicate Email)
+          //duplicate email
+          this.myForm.email.setErrors({'incorrect': true});
+          return false;
         });
     }
   }

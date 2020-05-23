@@ -14,7 +14,7 @@
               <input class="form-control" type="text" formControlName="name" [ngClass]="{ 'is-invalid': submitted && myForm.name.errors?.required }"/>
               <!-- error -->
               <div
-                class=""
+                class="invalid-feedback"
                 *ngIf="submitted && myForm.name.errors?.required"
               >
                 Name is required.
@@ -23,7 +23,8 @@
 
             <div class="form-group">
               <label for="inputEmail3">Email</label>
-              <input class="form-control" type="text" formControlName="email" />
+              <input class="form-control" type="text" formControlName="email" 
+              [ngClass]="{ 'is-invalid': submitted && (myForm.email.errors?.required || myForm.email.errors?.pattern || !myForm.email.valid)}"/>
               <!-- error -->
               <div
                 class="invalid-feedback"
@@ -37,6 +38,12 @@
               >
                 Enter valid email.
               </div>
+              <div
+                class="invalid-feedback"
+                *ngIf="submitted && !myForm.email.valid "
+              >
+                Email already used.
+              </div>
             </div>
 
             <div class="form-group">
@@ -45,6 +52,7 @@
                 class="form-control"
                 type="password"
                 formControlName="password"
+                [ngClass]="{ 'is-invalid': submitted && myForm.password.errors?.required }"
               />
               <!-- error -->
               <div
@@ -61,6 +69,7 @@
                 class="form-control"
                 type="text"
                 formControlName="phoneNumber"
+                [ngClass]="{ 'is-invalid': submitted && myForm.phoneNumber.errors?.required}"
               />
               <!-- error -->
               <div
@@ -92,12 +101,13 @@
                 *ngFor="let game_info of games_info.controls; let i = index"
                 formGroupName="{{ i }}"
               >
-                <div class="form-group d-inline-block col-6">
+                <div class="form-group d-inline-block col-5">
                   <label>Game</label>
                   <select
                     class="custom-select form-control"
                     (change)="updateGame($event.target.value, i)"
                     formControlName="game"
+                    [ngClass]="{ 'is-invalid': submitted && game_info.get('game').errors?.required}"
                   >
                     <option value="">Choose...</option>
                     <option
@@ -108,18 +118,19 @@
                   </select>
                   <div
                     class="invalid-feedback"
-                    *ngIf="submitted && myForm.role.errors?.required"
+                    *ngIf="submitted && game_info.get('game').errors?.required"
                   >
-                    Choose role.
+                    Choose game.
                   </div>
                 </div>
 
-                <div class="form-group d-inline-block col-6">
+                <div class="form-group d-inline-block col-5">
                   <label>Ranking</label>
                   <select
                     class="custom-select form-control"
                     (change)="updateRanking($event.target.value, i)"
                     formControlName="ranking"
+                    [ngClass]="{ 'is-invalid': submitted && game_info.get('ranking').errors?.required}"
                   >
                     <option value="">Choose...</option>
                     <option
@@ -130,11 +141,12 @@
                   </select>
                   <div
                     class="invalid-feedback"
-                    *ngIf="submitted && myForm.role.errors?.required"
+                    *ngIf="submitted && game_info.get('ranking').errors?.required"
                   >
-                    Choose role.
+                    Choose ranking.
                   </div>
                 </div>
+                <button type="button" class="btn btn-danger btn-sm col-2" (click)="delete_game_info(i)">Delete</button>
               </div>
             </div>
             <div class="form-group">

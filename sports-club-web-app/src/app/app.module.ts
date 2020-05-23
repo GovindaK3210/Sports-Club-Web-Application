@@ -18,6 +18,7 @@ import { UserLoginComponent } from './components/user-login/user-login.component
 import { AuthInterceptor } from './interceptors/jwt_interceptor';
 import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { SessionsInfoComponent } from './components/sessions-info/sessions-info.component';
 
 
 
@@ -30,7 +31,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     NavbarComponent,
     UserLoginComponent,
     NotAuthorizedComponent,
-    DashboardComponent
+    DashboardComponent,
+    SessionsInfoComponent
   ],
   imports: [
     BrowserModule,
