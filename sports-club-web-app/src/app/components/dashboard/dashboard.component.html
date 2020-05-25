@@ -1,4 +1,4 @@
-<div class="container bg-dark text-light rounded mt-3 pt-4 pb-3 pl-5 pr-5">
+<div class="container bg-dark text-light rounded mt-3 pt-4 pb-4 pl-5 pr-5">
         <div class="row">
           <div class="col">
             <p class="font-weight-bold h3">DASHBOARD </p>
@@ -13,7 +13,7 @@
     
 </div>
 
-<div class="container bg-dark text-light rounded mt-2 pt-4 pb-3 pl-5 pr-5">
+<div class="container bg-dark text-light rounded mt-2 pt-4 pb-4 pl-5 pr-5">
         <div class="row">
                 <div class="col-8">
                         <p class="font-weight-bold h5">SETUP</p>
@@ -89,6 +89,99 @@
 </div>
       
 
+<div class="container bg-dark text-light rounded mt-2 pt-4 pb-4 pl-5 pr-5">
+        <div class="row">
+                <div class="col-8">
+                        <p class="font-weight-bold h5">PRIORITY</p>
+                        <br/>
+                        Select priority for your game schedule
+                        <br/>
+                        <br/>
+
+                        <form [formGroup]="priorityForm" (ngSubmit)="onPriorityFormSubmit()">
+                        <div class="form-group" formArrayName="priorities_info">
+                        <div *ngFor="let priority_info of getFormArray().controls; let i = index" formGroupName="{{ i }}">
+                
+                            Priority #{{i+1}}: &nbsp;&nbsp;
+                                <select
+                                    class="custom-select form-control col-3"
+                                    (change)="updatePriority($event.target.value, i)"
+                                    formControlName="game"
+                                >
+                                    <option value="">Choose...</option>
+                                    <option
+                                    *ngFor="let name of GamesName[i]"
+                                    value="{{ name }}"
+                                    >{{ name }}
+                                    
+                                    </option>
+                                </select>
+                                <br/>
+                                <br/>
+
+                                
+                         </div>
+                        </div>
+
+                              
+                        <div
+                        class="text-danger"
+                        *ngIf="priorityFormSubmitted && !priorityForm.valid"
+                    >
+                        Please choose all priorities
+        </div>
+        
+                              <button type="submit" class="btn btn-primary custom_blue_bg col-5 ">Set</button>
+                        </form>
+
+
+
+                  
+                       
+                </div>
+                <div class="col-4">
+                        <p class="font-weight-bold h5">ATTENDANCE</p>
+                       
+                        Mark your attendance
+                        <br/>
+                        <br/>
+                        <button (click)="markAttendance()" type="submit" class="btn btn-success  col-8 ">Present</button>
+                       <br/>
+                        <div *ngIf="attendanceMarked" class="text-success">Attendance marked for {{attendanceDate}} at {{attendanceTime}}</div>
+                         
+
+
+                </div>
+        </div>
+
+</div>
+
+      
+
+<div class="container bg-dark text-light rounded mt-2 pt-4 pb-4 pl-5 pr-5">
+        <div class="row">
+                <div class="col-8">
+                        <p class="font-weight-bold h5">SCHEDULE</p>
+                        <br/>
+                        Generate your game schedule for today
+                        <br/>
+                        <br/>
+                        <button type="submit" class="btn btn-primary custom_blue_bg col-3" (click)="generateSchedule()">Generate</button>
+                        <div *ngIf="scheduleGenerated" class="text-success">Awaiting admin approval</div>
+
+
+
+
+                  
+                       
+                </div>
+                <div class="col-4">
+                    
+
+                </div>
+        </div>
+
+</div>
 
 
  

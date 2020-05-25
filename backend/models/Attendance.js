@@ -5,13 +5,17 @@ const Schema = mongoose.Schema;
 let Attendance = new Schema({
 
    player_id: {
-      type: Number
+      type: String
    },
    date: {
-      type: Date
+      type: String
    },
    time: {
        type: String
+   },
+   allowSchedule: {
+      type: Boolean,
+      default: false
    }
    
 }, {

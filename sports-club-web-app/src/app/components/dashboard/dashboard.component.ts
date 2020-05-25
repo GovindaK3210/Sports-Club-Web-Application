@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/service/auth.service';
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { FormArray, FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { ApiService } from './../../service/api.service';
 import { ToastrService } from 'ngx-toastr';
+import { range } from 'rxjs';
 
 
 
@@ -21,8 +22,18 @@ export class DashboardComponent implements OnInit {
 
   timeForm:FormGroup;
   timeFormSubmitted:Boolean;
+  priorityFormSubmitted:Boolean;
 
   oppForm:FormGroup;
+
+  attendanceMarked: boolean;
+  scheduleGenerated: boolean;
+  attendanceDate: String;
+  attendanceTime: String;
+
+  games_info: any[];
+  GamesName: any[][]=[];
+  priorityForm:FormGroup;
 
   constructor(private fb:FormBuilder, 
     private apiService: ApiService,
@@ -41,14 +52,119 @@ export class DashboardComponent implements OnInit {
         
       });
 
+      this.priorityForm = this.fb.group({
+     
+        priorities_info: this.fb.array([
+          
+        ])
+
+      })
+
     this.user_id = this.authService.getUserID()
     this.user_role = this.authService.getUserRole()
     this.user_name = this.authService.getUserName()
     this.user_email = this.authService.getUserEmail()
 
     this.timeFormSubmitted = false;
+    this.priorityFormSubmitted = false;
+    this.scheduleGenerated = false;
+
+    this.apiService.getPlayer(this.authService.getUserID()).subscribe(
+      (res) => {
+        this.games_info = res.games_info ;
+
+        var strArray: any[]=[];
+        for(var i=0; i < (this.games_info.length); i++)
+        {
+          
+          strArray.push(this.games_info[i].game)
+          this.getFormArray().push(this.fb.group({
+            game: ['', Validators.required],
+          }))
+        }
+        
+        for(var i=0; i < (this.games_info.length); i++)
+        {
+          this.GamesName.push(strArray);
+        }
+        
+
+        
+      }, (error) => {
+        return false;
+      });
 
 
+  }
+
+  getFormArray(){
+    return this.priorityForm.controls.priorities_info as FormArray;
+  }
+
+  onPriorityFormSubmit(){
+
+    console.log(this.getFormArray)
+    this.priorityFormSubmitted = true;
+
+    if(this.priorityForm.valid)
+    {
+      const val = this.priorityForm.value;
+      var gm: String[] = []
+      for(var i=0;i<val.priorities_info.length;i++)
+      {
+        gm.push(val.priorities_info[i].game)
+      }
+
+      var data = {
+        games_priority: gm
+      }
+
+
+      this.apiService.updatePlayer(this.authService.getUserID(), data).subscribe(
+        (res) => {
+          this.toastr.success("Priorities updated", "Success")
+
+          
+        }, (error) => {
+          this.toastr.error("Check DB connection", "Failure")
+          return false;
+        });
+
+    }
+
+  }
+
+  updatePriority(e, index)
+  {
+   
+
+
+    var x=index+1
+      for(;x<this.GamesName.length;x++)
+      {
+        this.GamesName[x] = this.GamesName[0];
+   
+
+        for(var i=0;i<x;i++)
+        {
+           
+            
+                var newG:any[] = this.GamesName[x].filter(item => item !== this.getFormArray().controls[i].get("game").value)
+                this.GamesName[x] = newG;
+                
+                
+
+            
+        }
+
+
+      }
+     
+    
+    
+    this.getFormArray().controls[index].get("game").setValue(e, {
+      onlySelf: true
+    })
   }
 
   updateRanking(e) {
@@ -101,6 +217,45 @@ export class DashboardComponent implements OnInit {
         });
 
     }
+  }
+
+  generateSchedule()
+  {
+    this.scheduleGenerated = true;
+  }
+
+  markAttendance()
+  {
+  
+    if(!this.attendanceMarked)
+    {
+      var today = new Date(); 
+      var today_date = today.getDate() +'-'+ (today.getMonth()+1) +'-'+ today.getFullYear();
+      var today_time = today.getHours() + ":" + today.getMinutes();
+      
+      var data_obj = {
+        player_id: this.authService.getUserID(),
+        date: today_date, 
+        time: today_time
+      };
+  
+      this.apiService.createAttendance(data_obj).subscribe(
+        (res) => {
+          
+          this.toastr.success("Attendance marked", "Success")
+          this.attendanceDate = res.date;
+          this.attendanceTime = res.time;
+          this.attendanceMarked = true;
+  
+  
+          
+        }, (error) => {
+          this.toastr.error("Check DB connection", "Failure")
+          return false;
+        });
+    }
+    
+
   }
 
   

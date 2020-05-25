@@ -137,4 +137,21 @@ export class ApiService {
     return throwError(errorMessage);
   }
 
+
+
+
+  //Attendance functions
+
+  baseUriAttendance:string = 'http://localhost:4000/attendance';
+
+
+  createAttendance(data): Observable<any> {
+    let url = `${this.baseUriAttendance}/create`;
+    return this.http.post(url, data)
+      .pipe(
+        catchError(this.errorMgmt)
+      )
+  }
+
+
 }
