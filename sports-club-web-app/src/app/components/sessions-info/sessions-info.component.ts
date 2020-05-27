@@ -8,20 +8,24 @@ import {AuthService} from '../../service/auth.service'
   styleUrls: ['./sessions-info.component.css']
 })
 export class SessionsInfoComponent implements OnInit {
-
   Sessions: any;
 
   constructor(
-    private apiService: ApiService,
+    public apiService: ApiService,
     private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.readSessions();
+    this.readSessionsAndProcessIDs();
   }
 
-  readSessions(){
+  readSessionsAndProcessIDs(){
     this.apiService.getSessionByPlayerID(this.authService.getUserID()).subscribe((data) => {
       this.Sessions = data
+      for (let i = 0; i< this.Sessions.length; ++i){
+        this.apiService.getPlayer(this.Sessions[i]["player1_id"]).subscribe(obj => {this.Sessions[i]["player1_name"] = obj["name"]});
+        this.apiService.getPlayer(this.Sessions[i]["player2_id"]).subscribe(obj => {this.Sessions[i]["player2_name"] = obj["name"]});
+        this.apiService.getPlayer(this.Sessions[i]["coach_id"]).subscribe(obj => {this.Sessions[i]["coach_name"] = obj["name"]});
+      }
     })
   }
 }

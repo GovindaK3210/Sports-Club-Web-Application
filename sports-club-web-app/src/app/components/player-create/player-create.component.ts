@@ -15,7 +15,9 @@ export class PlayerCreateComponent implements OnInit {
   // PlayerProfile: any = ['Player', 'Admin', 'Coach']
   GamesName: String[] = ['Tennis', 'Badminton', 'Table Tennis', 'Squash'];
   GamesRanking: String[] = ['Beginner', 'Medium', 'Advanced'];
-  numberOfGames: number = 1;
+  numberOfGames: number = 0;
+  gamesNamePerDropDown: String[][] = [];
+  // totalDropDown: number = 0;
 
   constructor(
     public fb: FormBuilder,
@@ -37,13 +39,9 @@ export class PlayerCreateComponent implements OnInit {
       role: ['player'],
       phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
       password: ['', [Validators.required]],
-      games_info: this.fb.array([
-        this.fb.group({
-          game: ['', Validators.required],
-          ranking: ['', Validators.required]
-        })
-      ])
+      games_info: this.fb.array([])
     })
+    this.add_games_info();
   }
 
   //getter for formarray
@@ -59,6 +57,13 @@ export class PlayerCreateComponent implements OnInit {
         game: ['', Validators.required],
         ranking: ['', Validators.required]
       }))
+
+      //Push a new dropdown with the remaining options
+      let tempGamesName: String[] = this.GamesName.filter(obj => obj);
+      for (let i = 0; i < this.gamesNamePerDropDown.length; ++i) {
+        tempGamesName = tempGamesName.filter(obj => obj !== this.games_info.controls[i].get('game').value);
+      }
+      this.gamesNamePerDropDown.push(tempGamesName);
     }
   }
 
@@ -68,6 +73,12 @@ export class PlayerCreateComponent implements OnInit {
     this.games_info.controls[index].get('game').setValue(e, {
       onlySelf: true
     })
+
+    for (let i = 0; i < this.gamesNamePerDropDown.length; ++i) {
+      if (i !== index)
+        this.gamesNamePerDropDown[i] = this.gamesNamePerDropDown[i].filter(obj => obj !== e);
+    }
+    this.updateDropDowns();
   }
 
   //choose ranking with dropdown
@@ -77,16 +88,30 @@ export class PlayerCreateComponent implements OnInit {
     })
   }
 
+  //update the dropdowns with the remaining options
+  updateDropDowns() {
+    for (let j = 0; j < this.gamesNamePerDropDown.length; ++j) {
+      let tempGamesName: String[] = this.GamesName.filter(obj => obj);
+      for (let i = 0; i < this.gamesNamePerDropDown.length; ++i) {
+        if (i != j)
+          tempGamesName = tempGamesName.filter(obj => obj !== this.games_info.controls[i].get('game').value);
+      }
+      this.gamesNamePerDropDown[j] = tempGamesName;
+    }
+  }
+
   // Getter to access form control
   get myForm() {
     return this.playerForm.controls;
   }
 
   //delete game selection
-  delete_game_info(index){
-    if (this.numberOfGames != 0) {
+  delete_game_info(index) {
+    if (this.numberOfGames != 1) {
       this.numberOfGames -= 1;
       this.games_info.removeAt(index);
+      this.gamesNamePerDropDown.splice(index, 1);
+      this.updateDropDowns();
     }
   }
 
@@ -103,20 +128,20 @@ export class PlayerCreateComponent implements OnInit {
           console.log('Player successfully created!')
           if (val.email && val.password) {
             this.authService.login(val.email, val.password)
-                .subscribe(
-                    (res) => {
-                        console.log("User is logged in");
-                        this.router.navigateByUrl('/player-dashboard');
-                    },
-                    (error) => {
-                      console.log(error);
-                    }
-                );
-        }
+              .subscribe(
+                (res) => {
+                  console.log("User is logged in");
+                  this.router.navigateByUrl('/player-dashboard');
+                },
+                (error) => {
+                  console.log(error);
+                }
+              );
+          }
         }, (error) => {
           console.log(error);
           //duplicate email
-          this.myForm.email.setErrors({'incorrect': true});
+          this.myForm.email.setErrors({ 'incorrect': true });
           return false;
         });
     }

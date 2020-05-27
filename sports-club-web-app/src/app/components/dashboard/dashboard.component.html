@@ -1,187 +1,164 @@
 <div class="container bg-dark text-light rounded mt-3 pt-4 pb-4 pl-5 pr-5">
-        <div class="row">
-          <div class="col">
-            <p class="font-weight-bold h3">DASHBOARD </p>
-            Username: {{user_name}}
-            <br/>
-            Email ID: {{user_email}}
+  <div class="row">
+    <div class="col">
+      <p class="font-weight-bold h3">DASHBOARD</p>
+      Username: {{ user_name }}
+      <br />
+      Email ID: {{ user_email }}
+    </div>
+  </div>
+</div>
+
+<div class="container bg-dark text-light rounded mt-2 pt-4 pb-4 pl-5 pr-5">
+  <div class="row">
+    <div class="col-8">
+      <p class="font-weight-bold h5">SETUP</p>
+      <br />
+      Select opponent ranking level
+      <br />
+      <br />
+
+      <form [formGroup]="oppForm" (ngSubmit)="onOppFormSubmit()">
+        <div class="form-group">
+          <select
+            class="custom-select form-control col-4"
+            (change)="updateRanking($event.target.value)"
+            formControlName="opponent_player_ranking"
+          >
+            <option
+              *ngFor="let gamesRanking of GamesRanking"
+              value="{{ gamesRanking }}"
+              >{{ gamesRanking }}
+            </option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary custom_blue_bg col-4">
+          Set
+        </button>
+      </form>
+    </div>
+    <div class="col-4">
+      <p class="font-weight-bold h5">TIMINGS</p>
+      <br />
+      Select your daily timings
+      <br />
+      <br />
+
+      <form [formGroup]="timeForm" (ngSubmit)="onTimeFormSubmit()">
+        <div class="form-group">
+          <label>Start Time: &nbsp;&nbsp;</label>
+          <input type="time" name="startTime" formControlName="startTime" />
+        </div>
+        <div class="form-group">
+          <label>End Time: &nbsp;&nbsp;&nbsp;</label>
+          <input type="time" name="endTime" formControlName="endTime" />
+        </div>
+
+        <div
+          class="text-danger"
+          *ngIf="
+            timeFormSubmitted &&
+            (getTimeForm().startTime.errors?.required ||
+              getTimeForm().endTime.errors?.required ||
+              getTimeForm().startTime.errors?.pattern ||
+              getTimeForm().endTime.errors?.pattern)
+          "
+        >
+          Enter valid times (HH:MM) AM/PM
+        </div>
+
+        <button type="submit" class="btn btn-primary custom_blue_bg col-8">
+          Set
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="container bg-dark text-light rounded mt-2 pt-4 pb-4 pl-5 pr-5">
+  <div class="row">
+    <div class="col-8">
+      <p class="font-weight-bold h5">PRIORITY</p>
+      <br />
+      Select priority for your game schedule
+      <br />
+      <br />
+
+      <form [formGroup]="priorityForm" (ngSubmit)="onPriorityFormSubmit()">
+        <div class="form-group" formArrayName="priorities_info">
+          <div
+            *ngFor="let priority_info of getFormArray().controls; let i = index"
+            formGroupName="{{ i }}"
+          >
+            Priority #{{ i + 1 }}: &nbsp;&nbsp;
+            <select
+              class="custom-select form-control col-3"
+              (change)="updatePriority($event.target.value, i)"
+              formControlName="game"
+            >
+              <option value="">Choose...</option>
+              <option *ngFor="let name of GamesName[i]" value="{{ name }}"
+                >{{ name }}
+              </option>
+            </select>
+            <br />
+            <br />
           </div>
-         
         </div>
 
-        
-    
+        <div
+          class="text-danger"
+          *ngIf="priorityFormSubmitted && !priorityForm.valid"
+        >
+          Please choose all priorities
+        </div>
+
+        <button type="submit" class="btn btn-primary custom_blue_bg col-5">
+          Set
+        </button>
+      </form>
+    </div>
+    <div class="col-4">
+      <p class="font-weight-bold h5">ATTENDANCE</p>
+
+      Mark your attendance
+      <br />
+      <br />
+      <button
+        (click)="markAttendance()"
+        type="submit"
+        class="btn btn-success col-8"
+      >
+        Present
+      </button>
+      <br />
+      <div *ngIf="attendanceMarked" class="text-success">
+        Attendance marked for {{ attendanceDate }} at {{ attendanceTime }}
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="container bg-dark text-light rounded mt-2 pt-4 pb-4 pl-5 pr-5">
-        <div class="row">
-                <div class="col-8">
-                        <p class="font-weight-bold h5">SETUP</p>
-                        <br/>
-                        Select opponent ranking level
-                        <br/>
-                        <br/>
-
-                        <form [formGroup]="oppForm" (ngSubmit)="onOppFormSubmit()">
-                                <div class="form-group">
-                                <select
-                                class="custom-select form-control col-4"
-                                (change)="updateRanking($event.target.value)"
-                                formControlName="opponent_player_ranking"
-                               
-                              
-                            >
-                                <option
-                                *ngFor="let gamesRanking of GamesRanking"
-                                value="{{ gamesRanking }}"
-                                >{{ gamesRanking }}
-                                </option>
-                                </select>
-                              </div>
-
-                              
-
-                              <button type="submit" class="btn btn-primary custom_blue_bg col-4 ">Set</button>
-                        </form>
-                       
-                </div>
-                <div class="col-4">
-                        <p class="font-weight-bold h5">TIMINGS</p>
-                        <br/>
-                        Select your daily timings
-                        <br/>
-                        <br/>
-
-                            <form [formGroup]="timeForm" (ngSubmit)="onTimeFormSubmit()">
-                                <div class="form-group">
-                                  <label>Start Time: &nbsp;&nbsp;</label>
-                                  <input type="time" name="startTime" formControlName="startTime"
-                               
-                                  >
-                                  
-                                </div>
-                                <div class="form-group">
-                                        <label>End Time: &nbsp;&nbsp;&nbsp;</label>
-                                        <input type="time" name="endTime" formControlName="endTime"
-                                        
-                                        >
-
-                                        
-                                </div>
-
-                                <div
-                                class="text-danger"
-                                *ngIf="timeFormSubmitted && 
-                                (getTimeForm().startTime.errors?.required || getTimeForm().endTime.errors?.required || getTimeForm().startTime.errors?.pattern || getTimeForm().endTime.errors?.pattern)"
-                            >
-                                Enter valid times (HH:MM) AM/PM
-                </div>
-
-                                
-                               
-                                <button type="submit" class="btn btn-primary custom_blue_bg col-8">Set</button>
-                              </form>
-
-
-                </div>
-        </div>
-
+  <div class="row">
+    <div class="col-8">
+      <p class="font-weight-bold h5">SCHEDULE</p>
+      <br />
+      Generate your game schedule for today
+      <br />
+      <br />
+      <button
+        type="submit"
+        class="btn btn-primary custom_blue_bg col-3"
+        (click)="generateSchedule()"
+      >
+        Generate
+      </button>
+      <div *ngIf="scheduleGenerated" class="text-success">
+        Awaiting admin approval
+      </div>
+    </div>
+    <div class="col-4"></div>
+  </div>
 </div>
-      
-
-<div class="container bg-dark text-light rounded mt-2 pt-4 pb-4 pl-5 pr-5">
-        <div class="row">
-                <div class="col-8">
-                        <p class="font-weight-bold h5">PRIORITY</p>
-                        <br/>
-                        Select priority for your game schedule
-                        <br/>
-                        <br/>
-
-                        <form [formGroup]="priorityForm" (ngSubmit)="onPriorityFormSubmit()">
-                        <div class="form-group" formArrayName="priorities_info">
-                        <div *ngFor="let priority_info of getFormArray().controls; let i = index" formGroupName="{{ i }}">
-                
-                            Priority #{{i+1}}: &nbsp;&nbsp;
-                                <select
-                                    class="custom-select form-control col-3"
-                                    (change)="updatePriority($event.target.value, i)"
-                                    formControlName="game"
-                                >
-                                    <option value="">Choose...</option>
-                                    <option
-                                    *ngFor="let name of GamesName[i]"
-                                    value="{{ name }}"
-                                    >{{ name }}
-                                    
-                                    </option>
-                                </select>
-                                <br/>
-                                <br/>
-
-                                
-                         </div>
-                        </div>
-
-                              
-                        <div
-                        class="text-danger"
-                        *ngIf="priorityFormSubmitted && !priorityForm.valid"
-                    >
-                        Please choose all priorities
-        </div>
-        
-                              <button type="submit" class="btn btn-primary custom_blue_bg col-5 ">Set</button>
-                        </form>
-
-
-
-                  
-                       
-                </div>
-                <div class="col-4">
-                        <p class="font-weight-bold h5">ATTENDANCE</p>
-                       
-                        Mark your attendance
-                        <br/>
-                        <br/>
-                        <button (click)="markAttendance()" type="submit" class="btn btn-success  col-8 ">Present</button>
-                       <br/>
-                        <div *ngIf="attendanceMarked" class="text-success">Attendance marked for {{attendanceDate}} at {{attendanceTime}}</div>
-                         
-
-
-                </div>
-        </div>
-
-</div>
-
-      
-
-<div class="container bg-dark text-light rounded mt-2 pt-4 pb-4 pl-5 pr-5">
-        <div class="row">
-                <div class="col-8">
-                        <p class="font-weight-bold h5">SCHEDULE</p>
-                        <br/>
-                        Generate your game schedule for today
-                        <br/>
-                        <br/>
-                        <button type="submit" class="btn btn-primary custom_blue_bg col-3" (click)="generateSchedule()">Generate</button>
-                        <div *ngIf="scheduleGenerated" class="text-success">Awaiting admin approval</div>
-
-
-
-
-                  
-                       
-                </div>
-                <div class="col-4">
-                    
-
-                </div>
-        </div>
-
-</div>
-
-
- 
