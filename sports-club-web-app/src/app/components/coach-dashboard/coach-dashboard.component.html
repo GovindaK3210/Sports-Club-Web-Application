@@ -1,0 +1,103 @@
+<div class="container bg-dark text-light rounded mt-3 pt-4 pb-4 pl-5 pr-5">
+  <div class="row">
+    <div class="col">
+      <p class="font-weight-bold h3">COACH DASHBOARD</p>
+      Username: {{ authService.getUserName() }}
+      <br />
+      Email ID: {{ authService.getUserEmail() }}
+    </div>
+  </div>
+</div>
+
+<div class="container bg-dark rounded mt-3 pb-4 pt-4 pl-5 pr-5">
+  <!-- No data message -->
+  <p *ngIf="Sessions?.length <= 0" class="no-data text-center">
+    There are no sessions yet!
+  </p>
+
+  <!-- To Be Assessed -->
+  <p class="font-weight-bold h4 text-light">TO BE ASSESSED</p>
+  <table
+    class="table table-bordered table-striped bg-dark text-light"
+    *ngIf="Sessions?.length > 0"
+  >
+    <thead class="custom_blue_bg" [formGroup]="session_form">
+      <tr>
+        <th scope="col">Game</th>
+        <th scope="col">Game Court</th>
+        <th scope="col center">Coach Name</th>
+        <th scope="col">Player1 Name</th>
+        <!-- <th scope="col">Player1 Ranking</th> -->
+        <th scope="col">Player2 Name</th>
+        <!-- <th scope="col">Player2 Ranking</th> -->
+        <th scope="col center">Start Time</th>
+        <th scope="col center">End Time</th>
+        <!-- <th scope="col">Player 1 Score</th>
+        <th scope="col">Player 2 Score</th>
+        <th scope="col">Minutes Played</th>
+        <th scope="col">Assess</th> -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let session of Sessions; let i = index">
+        <td>{{ session.game }}</td>
+        <td>{{ session.game_court }}</td>
+        <td>{{ session.coach_name }}</td>
+        <td>{{ session.player1_name }}</td>
+        <!-- <td>{{session.ranking_player1}}</td> -->
+        <td>{{ session.player2_name }}</td>
+        <!-- <td>{{session.ranking_player2}}</td> -->
+        <td>{{ session.start_time }}</td>
+        <td>{{ session.end_time }}</td>
+        <!-- <td>
+          <input
+            class="form-control"
+            type="text"
+            formControlName="name"
+            [ngClass]="{
+              'is-invalid': submitted && myForm.name.errors?.required
+            }"
+          />
+        </td> -->
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Assessed History -->
+  <p class="font-weight-bold h4 text-light pt-3">ASSESSED HISTORY</p>
+  <table
+    class="table table-bordered table-striped bg-dark text-light"
+    *ngIf="Sessions?.length > 0"
+  >
+    <thead class="custom_blue_bg">
+      <tr>
+        <th scope="col">Game</th>
+        <th scope="col">Game Court</th>
+        <th scope="col center">Coach Name</th>
+        <th scope="col">Player1 Name</th>
+        <!-- <th scope="col">Player1 Ranking</th> -->
+        <th scope="col">Player2 Name</th>
+        <!-- <th scope="col">Player2 Ranking</th> -->
+        <th scope="col center">Start Time</th>
+        <th scope="col center">End Time</th>
+        <!-- <th scope="col">Player 1 Score</th>
+        <th scope="col">Player 2 Score</th>
+        <th scope="col">Minutes Played</th>
+        <th scope="col">Modify</th> -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let session of Sessions; let i = index">
+        <td>{{ session.game }}</td>
+        <td>{{ session.game_court }}</td>
+        <td>{{ session.coach_name }}</td>
+        <td>{{ session.player1_name }}</td>
+        <!-- <td>{{session.ranking_player1}}</td> -->
+        <td>{{ session.player2_name }}</td>
+        <!-- <td>{{session.ranking_player2}}</td> -->
+        <td>{{ session.start_time }}</td>
+        <td>{{ session.end_time }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

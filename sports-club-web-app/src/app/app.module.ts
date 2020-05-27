@@ -22,6 +22,7 @@ import { SessionsInfoComponent } from './components/sessions-info/sessions-info.
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { CoachDashboardComponent } from './components/coach-dashboard/coach-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { ToastrModule } from 'ngx-toastr';
     UserLoginComponent,
     NotAuthorizedComponent,
     DashboardComponent,
-    SessionsInfoComponent
+    SessionsInfoComponent,
+    CoachDashboardComponent
   ],
   imports: [
     BrowserModule,

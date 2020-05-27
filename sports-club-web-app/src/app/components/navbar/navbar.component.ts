@@ -12,7 +12,7 @@ import { AuthService } from './../../service/auth.service';
 export class NavbarComponent implements OnInit {
   @Input() title: string;
 
-  constructor(private authService: AuthService,private router: Router) { }
+  constructor(public authService: AuthService,private router: Router) { }
 
   logoutPlayer()
   {

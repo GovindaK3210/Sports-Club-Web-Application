@@ -36,7 +36,10 @@ export class UserLoginComponent implements OnInit {
                 .subscribe(
                     (res) => {
                         console.log("User is logged in");
-                        this.router.navigateByUrl('/player-dashboard');
+                        if (this.authService.getUserRole() === 'player')
+                          this.router.navigateByUrl('/player-dashboard');
+                        else if (this.authService.getUserRole() === 'coach')
+                          this.router.navigateByUrl("/coach-dashboard")
                     },
                     (error) => {
                       console.log(error);
