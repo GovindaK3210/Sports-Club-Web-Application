@@ -16,7 +16,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { UserLoginComponent } from './components/user-login/user-login.component';
 
 import { AuthInterceptor } from './interceptors/jwt_interceptor';
-import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
+import { NotAuthorizedComponent } from './components/not-authorized/not-authorized.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SessionsInfoComponent } from './components/sessions-info/sessions-info.component';
 

@@ -12,83 +12,83 @@ import * as moment from "moment";
 
 export class AuthService {
 
-  baseUri:string = 'http://localhost:4000/login';
+  baseUri: string = 'http://localhost:4000/login';
 
 
   constructor(private http: HttpClient) {
   }
-    
 
-         
-      
-  login(email:string, password:string ): Observable<any>  {
-    
 
-    return this.http.post(this.baseUri, {email, password}).pipe(
-        map((res: Response) => {
-          console.log(res);
-          this.setSession(res);
-      
-        }),
-        
-        catchError(this.errorMgmt)
-      )
+
+
+  login(email: string, password: string): Observable<any> {
+
+
+    return this.http.post(this.baseUri, { email, password }).pipe(
+      map((res: Response) => {
+        console.log(res);
+        this.setSession(res);
+
+      }),
+
+      catchError(this.errorMgmt)
+    )
   }
 
   private setSession(authResult) {
-    const expiresAt = moment().add(authResult.expiresIn,'second');
+    const expiresAt = moment().add(authResult.expiresIn, 'second');
 
     localStorage.setItem('id_token', authResult.idToken);
-    localStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()) );
+    localStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()));
 
     localStorage.setItem('user_id', authResult.user_id);
     localStorage.setItem('user_name', authResult.user_name);
     localStorage.setItem('user_email', authResult.user_email);
     localStorage.setItem('user_role', authResult.user_role);
 
-                
 
-}     
 
-logout() {
-  localStorage.removeItem("id_token");
-  localStorage.removeItem("expires_at");
+  }
 
-  localStorage.removeItem('user_id')
-  localStorage.removeItem('user_name')
-  localStorage.removeItem('user_email')
-  localStorage.removeItem('user_role')
-}
+  logout() {
+    localStorage.removeItem("id_token");
+    localStorage.removeItem("expires_at");
 
-public isLoggedIn() {
-  return moment().isBefore(this.getExpiration());
-}
+    localStorage.removeItem('user_id')
+    localStorage.removeItem('user_name')
+    localStorage.removeItem('user_email')
+    localStorage.removeItem('user_role')
+  }
 
-isLoggedOut() {
-  return !this.isLoggedIn();
-}
+  public isLoggedIn() {
+    return moment().isBefore(this.getExpiration());
+  }
 
-getUserRole() {
-  return localStorage.getItem("user_role");
-}
+  isLoggedOut() {
+    return !this.isLoggedIn();
+  }
 
-getUserName() {
-  return localStorage.getItem("user_name");
-}
+  getUserRole() {
+    return localStorage.getItem("user_role");
+  }
 
-getUserEmail() {
-  return localStorage.getItem("user_email");
-}
+  getUserName() {
+    return localStorage.getItem("user_name");
+  }
 
-getUserID() {
-  return localStorage.getItem("user_id");
-}
+  getUserEmail() {
+    return localStorage.getItem("user_email");
+  }
 
-getExpiration() {
-  const expiration = localStorage.getItem("expires_at");
-  const expiresAt = JSON.parse(expiration);
-  return moment(expiresAt);
-}    
+  getUserID() {
+    return localStorage.getItem("user_id");
+  }
+
+  getExpiration() {
+    const expiration = localStorage.getItem("expires_at");
+    const expiresAt = JSON.parse(expiration);
+    return moment(expiresAt);
+  }
 
 
   errorMgmt(error: HttpErrorResponse) {

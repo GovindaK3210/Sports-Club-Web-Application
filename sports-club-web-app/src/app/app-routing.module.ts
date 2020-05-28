@@ -7,7 +7,7 @@ import { PlayerEditComponent } from './components/player-edit/player-edit.compon
 import { UserLoginComponent } from './components/user-login/user-login.component'
 
 import { AuthGuard } from './auth/auth.guard';
-import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
+import { NotAuthorizedComponent } from './components/not-authorized/not-authorized.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SessionsInfoComponent } from './components/sessions-info/sessions-info.component';
 import { CoachDashboardComponent} from "./components/coach-dashboard/coach-dashboard.component"
