@@ -154,4 +154,26 @@ export class ApiService {
   }
 
 
+  getAttendanceByIDandDate(id, date): Observable<any> {
+    let url = `${this.baseUriAttendance}/read-special/${id}/${date}`;
+    return this.http.get(url, {headers: this.headers}).pipe(
+      map((res: Response) => {
+        return res || {}
+      }),
+      catchError(this.errorMgmt)
+    )
+  }
+
+  getAllAttendanceByDate(date): Observable<any> {
+    let url = `${this.baseUriAttendance}/find-date/${date}`;
+    return this.http.get(url, {headers: this.headers}).pipe(
+      map((res: Response) => {
+        return res || {}
+      }),
+      catchError(this.errorMgmt)
+    )
+  }
+
+
+
 }

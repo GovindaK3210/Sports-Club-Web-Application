@@ -22,16 +22,27 @@ export class DashboardComponent implements OnInit {
 
   timeForm: FormGroup;
   timeFormSubmitted: Boolean;
+  scheduleFormSubmitted: Boolean;
+
   priorityFormSubmitted: Boolean;
 
   oppForm: FormGroup;
+  currAttID: String;
+
+  scheduleForm: FormGroup;
+
+  notTimeSet: boolean;
+  notPrioritySet: boolean;
+  notAttendanceMarked: boolean;
 
   attendanceMarked: boolean;
   scheduleGenerated: boolean;
   attendanceDate: String;
   attendanceTime: String;
+  already: Boolean;
 
   games_info: any[];
+  present_players: any[];
   GamesName: any[][] = [];
   priorityForm: FormGroup;
 
@@ -52,6 +63,12 @@ export class DashboardComponent implements OnInit {
 
     });
 
+    this.scheduleForm = this.fb.group({
+      chooser: ['system', Validators.required],
+      opp_player: ['']
+
+    });
+
     this.priorityForm = this.fb.group({
 
       priorities_info: this.fb.array([
@@ -68,6 +85,26 @@ export class DashboardComponent implements OnInit {
     this.timeFormSubmitted = false;
     this.priorityFormSubmitted = false;
     this.scheduleGenerated = false;
+
+    var today = new Date();
+    var today_date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+    this.present_players = []
+
+    this.apiService.getAllAttendanceByDate(today_date).subscribe(
+      (res) => {
+
+        for(var i=0;i<res.length;i++)
+        {
+
+          this.present_players.push( {player_name: res[i].player_name, player_id: res[i].player_id} )
+        }
+
+
+
+      }, (error) => {
+        return false;
+      });
+    
 
     this.apiService.getPlayer(this.authService.getUserID()).subscribe(
       (res) => {
@@ -119,6 +156,7 @@ export class DashboardComponent implements OnInit {
       this.apiService.updatePlayer(this.authService.getUserID(), data).subscribe(
         (res) => {
           this.toastr.success("Priorities updated", "Success")
+          this.notPrioritySet=false;
 
 
         }, (error) => {
@@ -180,6 +218,7 @@ export class DashboardComponent implements OnInit {
       this.apiService.updatePlayer(this.authService.getUserID(), this.timeForm.value).subscribe(
         (res) => {
           this.toastr.success("Timings updated", "Success")
+          this.notTimeSet = false;
 
 
         }, (error) => {
@@ -209,37 +248,140 @@ export class DashboardComponent implements OnInit {
   }
 
   generateSchedule() {
-    this.scheduleGenerated = true;
-  }
+    this.scheduleFormSubmitted = true;
+    
+    if(this.scheduleForm.valid)
+    {
 
-  markAttendance() {
-
-    if (!this.attendanceMarked) {
-      var today = new Date();
-      var today_date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
-      var today_time = today.getHours() + ":" + today.getMinutes();
-
-      var data_obj = {
-        player_id: this.authService.getUserID(),
-        date: today_date,
-        time: today_time
-      };
-
-      this.apiService.createAttendance(data_obj).subscribe(
+      this.apiService.getPlayer(this.authService.getUserID()).subscribe(
         (res) => {
+          console.log(res)
+          var passed:Boolean = true;
+          if(res.startTime==null || res.endTime==null){
+            this.notTimeSet=true;
+            passed = false;
+          } 
+  
+          if(res.games_priority.length==0)
+          {
+            this.notPrioritySet=true;
+            passed=false
+          }
+  
+          var today = new Date();
+          var today_date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+  
+          this.apiService.getAttendanceByIDandDate(this.authService.getUserID(), today_date).subscribe(
+            (res) => {
+    
+              if(res.length!=0) {
+    
+                  this.notAttendanceMarked=false;
+                  this.currAttID = res[0]._id;
+                  console.log(this.currAttID)
+              
+            }
+            else{
+              this.notAttendanceMarked=true;
+              passed=false
+            }
+           
+    
+            }, (error) => {
+              this.toastr.error("Check DB connection", "Failure")
+              passed=false
+              
+              return false;
+            });
+  
+          if(passed) 
+          {
+            this.scheduleGenerated = true;
+            if(this.scheduleForm.controls.opp_player.value!='')
+            {
 
-          this.toastr.success("Attendance marked", "Success")
-          this.attendanceDate = res.date;
-          this.attendanceTime = res.time;
-          this.attendanceMarked = true;
 
-
-
+            }
+            
+  
+  
+  
+  
+          }
+  
+  
         }, (error) => {
           this.toastr.error("Check DB connection", "Failure")
           return false;
         });
     }
+
+ 
+
+  }
+
+  updateOppPlayer(e) {
+    this.scheduleForm.controls.opp_player.setValue(e, {
+      onlySelf: true
+    })
+
+  }
+
+  markAttendance() {
+
+    
+      var today = new Date();
+      var today_date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+      var today_time = today.getHours() + ":" + today.getMinutes();
+
+
+      this.apiService.getAttendanceByIDandDate(this.authService.getUserID(), today_date).subscribe(
+        (res) => {
+
+          if(res.length!=0) {
+
+         
+          this.toastr.success("Your attendance was already marked for today!", "Success")
+          this.already = true;
+          this.notAttendanceMarked=false;
+          this.attendanceDate = res[0].date;
+          this.attendanceTime = res[0].time;
+        }
+        else {
+          var data_obj = {
+            player_id: this.authService.getUserID(),
+            player_name: this.authService.getUserName(),
+            date: today_date,
+            time: today_time
+          };
+    
+          this.apiService.createAttendance(data_obj).subscribe(
+            (res) => {
+    
+              this.toastr.success("Attendance marked", "Success")
+              this.attendanceDate = res.date;
+              this.attendanceTime = res.time;
+              this.attendanceMarked = true;
+              this.notAttendanceMarked=false;
+    
+    
+    
+            }, (error) => {
+              this.toastr.error("Check DB connection", "Failure")
+              return false;
+            });
+
+          }
+
+        }, (error) => {
+          this.toastr.error("Check DB connection", "Failure")
+          
+          return false;
+        });
+
+
+     
+    
 
 
   }

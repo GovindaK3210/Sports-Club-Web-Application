@@ -136,6 +136,10 @@
       <div *ngIf="attendanceMarked" class="text-success">
         Attendance marked for {{ attendanceDate }} at {{ attendanceTime }}
       </div>
+      <div *ngIf="already" class="text-success">
+            Attendance was already marked for {{ attendanceDate }} at {{ attendanceTime }}
+        </div>
+
     </div>
   </div>
 </div>
@@ -148,16 +152,81 @@
       Generate your game schedule for today
       <br />
       <br />
-      <button
-        type="submit"
-        class="btn btn-primary custom_blue_bg col-3"
-        (click)="generateSchedule()"
-      >
-        Generate
-      </button>
-      <div *ngIf="scheduleGenerated" class="text-success">
-        Awaiting admin approval
-      </div>
+
+      <form [formGroup]="scheduleForm" (ngSubmit)="generateSchedule()">
+
+            <div class="form-check">
+
+                 
+                    <input class="form-check-input" id="system" type="radio" value="system" name="chooser" formControlName="chooser">
+                    <label class="form-check-label" for="system">Let the system assign me an opponent player</label>
+       
+            </div>
+                  
+            <div class="form-check">
+
+                    <input class="form-check-input" id="player" type="radio" value="player" name="chooser" formControlName="chooser">
+                    <label class="form-check-label" for="player">I will choose from the list of players who are present (marked attendance)</label>
+                    
+             </div>
+             <div *ngIf="scheduleForm.controls.chooser.value=='player'" class="">
+                    <br/>
+                    <select
+                    class="custom-select form-control col-3"
+                    (change)="updateOppPlayer($event.target.value)"
+                    formControlName="opp_player"
+                   
+                  >
+                  <option value="">Choose...</option>
+                  <option *ngFor="let p of present_players" value="{{ p.player_id }}"
+                  >{{ p.player_name }}
+                </option>
+                  </select>
+                       
+                </div>
+                <br/>
+                  <button type="submit" class="btn btn-primary custom_blue_bg col-3">Generate</button>
+                  <br/>
+
+                  <div
+                  class="text-danger"
+                  *ngIf="scheduleFormSubmitted && !scheduleForm.valid"
+                >
+                  Please choose an opponent player
+                </div>
+
+                
+                <div
+                  class="text-danger"
+                  *ngIf="scheduleFormSubmitted && notTimeSet"
+                >
+                Please set your timings in above panel first
+                </div>
+                
+                <div
+                  class="text-danger"
+                  *ngIf="scheduleFormSubmitted && notPrioritySet"
+                >
+                Please set your games priority in above panel first
+                </div>
+                <div
+                  class="text-danger"
+                  *ngIf="scheduleFormSubmitted && notAttendanceMarked"
+                >
+                Please mark your attendance first
+                </div>
+                <br/>
+                <div *ngIf="scheduleGenerated" class="text-success">
+                    Awaiting admin approval. 
+                </div>
+            
+      </form>
+
+
+      
+
+
+
     </div>
     <div class="col-4"></div>
   </div>

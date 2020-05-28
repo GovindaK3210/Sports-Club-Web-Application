@@ -7,6 +7,9 @@ let Attendance = new Schema({
    player_id: {
       type: String
    },
+   player_name: {
+      type: String
+   },
    date: {
       type: String
    },
@@ -16,6 +19,11 @@ let Attendance = new Schema({
    allowSchedule: {
       type: Boolean,
       default: false
+   },
+
+   desired_opponent_id: {
+      type: String,
+      default: "system"
    }
    
 }, {
