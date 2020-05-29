@@ -24,7 +24,14 @@ export class AuthGuard implements CanActivate {
       }
 
       if(state.url=="/players-list") {
-        if(this.authService.getUserRole()!="player") {
+        if(this.authService.getUserRole()!="admin") {
+          this.router.navigate(['/not-authorized']);
+          return false;
+        }
+      }
+
+      if(state.url=="/edit-player/:id") {
+        if(this.authService.getUserRole()!="admin") {
           this.router.navigate(['/not-authorized']);
           return false;
         }
@@ -43,6 +50,22 @@ export class AuthGuard implements CanActivate {
           return false;
         }
       }
+
+      
+      if(state.url=="/coach-dashboard") {
+        if(this.authService.getUserRole()!="coach") {
+          this.router.navigate(['/not-authorized']);
+          return false;
+        }
+      }
+
+      if(state.url=="/admin-dashboard") {
+        if(this.authService.getUserRole()!="admin") {
+          this.router.navigate(['/not-authorized']);
+          return false;
+        }
+      }
+      
 
         return true;
     }

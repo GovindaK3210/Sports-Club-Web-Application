@@ -9,13 +9,13 @@ let PracticeSession = new Schema({
       type: String
    },
    player1_id: {
-      type: ObjectId
+      type: String
    },
    player2_id: {
-      type: ObjectId
+      type: String
    },
    coach_id: {
-      type: ObjectId
+      type: String
    },
    game_court: {
       type: String
@@ -31,6 +31,10 @@ let PracticeSession = new Schema({
       type: String
    },
    end_time:
+   {
+      type: String
+   },
+   date:
    {
       type: String
    }

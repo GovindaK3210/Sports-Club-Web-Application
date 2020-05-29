@@ -17,11 +17,15 @@ let Attendance = new Schema({
        type: String
    },
    allowSchedule: {
-      type: Boolean,
-      default: false
+      type: Boolean
    },
 
    desired_opponent_id: {
+      type: String,
+      default: "system"
+   },
+
+   desired_opponent_name: {
       type: String,
       default: "system"
    }

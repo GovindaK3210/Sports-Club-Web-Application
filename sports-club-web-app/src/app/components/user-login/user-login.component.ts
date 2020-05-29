@@ -40,6 +40,8 @@ export class UserLoginComponent implements OnInit {
                           this.router.navigateByUrl('/player-dashboard');
                         else if (this.authService.getUserRole() === 'coach')
                           this.router.navigateByUrl("/coach-dashboard")
+                          else if (this.authService.getUserRole() === 'admin')
+                          this.router.navigateByUrl("/admin-dashboard")
                     },
                     (error) => {
                       console.log(error);

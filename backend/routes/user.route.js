@@ -31,6 +31,17 @@ userRoute.route('/').get((req, res) => {
   })
 })
 
+// Get All Coaches
+userRoute.route('/find-coaches').get((req, res) => {
+  User.find({role:"coach"},(error, data) => {
+    if (error) {
+      return next(error)
+    } else {
+      res.json(data)
+    }
+  })
+})
+
 
 // Get single User
 userRoute.route('/read/:id').get((req, res) => {
@@ -71,5 +82,7 @@ userRoute.route('/delete/:id').delete((req, res, next) => {
     }
   })
 })
+
+
 
 module.exports = userRoute;

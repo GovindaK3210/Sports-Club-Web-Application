@@ -28,6 +28,12 @@ export class ApiService {
     return this.http.get(`${this.baseUri}`);
   }
 
+  // get all coaches
+  getCoaches() {
+    return this.http.get(`${this.baseUri}/find-coaches`);
+  }
+
+
   // Get player
   getPlayer(id): Observable<any> {
     let url = `${this.baseUri}/read/${id}`;
@@ -73,6 +79,8 @@ export class ApiService {
     return this.http.get(`${this.baseUriPracticeSession}`);
   }
 
+
+
   // Get session by session id
   getSessionBySessionID(id): Observable<any> {
     let url = `${this.baseUriPracticeSession}/read/${id}`;
@@ -112,6 +120,18 @@ export class ApiService {
   }
 
 
+    // get all sessions by date
+    getSessionByDate(date): Observable<any> {
+      let url = `${this.baseUriPracticeSession}/read-by-date/${date}`;
+      return this.http.get(url, {headers: this.headers}).pipe(
+        map((res: Response) => {
+          return res || {}
+        }),
+        catchError(this.errorMgmt)
+      )
+    }
+
+
   // get session by coachID
   getSessionByCoachID(id): Observable<any> {
     let url = `${this.baseUriPracticeSession}/read-by-coachid/${id}`;
@@ -144,6 +164,12 @@ export class ApiService {
 
   baseUriAttendance:string = 'http://localhost:4000/attendance';
 
+  updateAttendance(id, data): Observable<any> {
+    let url = `${this.baseUriAttendance}/update/${id}`;
+    return this.http.put(url, data, { headers: this.headers }).pipe(
+      catchError(this.errorMgmt)
+    )
+  }
 
   createAttendance(data): Observable<any> {
     let url = `${this.baseUriAttendance}/create`;
@@ -173,6 +199,11 @@ export class ApiService {
       catchError(this.errorMgmt)
     )
   }
+
+    // Get all attendances
+    getAttendances():Observable<any> {
+      return this.http.get(`${this.baseUriAttendance}`);
+    }
 
 
 

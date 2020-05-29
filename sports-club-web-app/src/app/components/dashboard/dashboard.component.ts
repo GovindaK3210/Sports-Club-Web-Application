@@ -14,6 +14,7 @@ import { range } from 'rxjs';
 })
 export class DashboardComponent implements OnInit {
 
+  ptinvalid: Boolean;
   user_id: String
   user_role: String
   user_name: String
@@ -40,6 +41,7 @@ export class DashboardComponent implements OnInit {
   attendanceDate: String;
   attendanceTime: String;
   already: Boolean;
+  adminApproved: Boolean = false;
 
   games_info: any[];
   present_players: any[];
@@ -96,7 +98,11 @@ export class DashboardComponent implements OnInit {
         for(var i=0;i<res.length;i++)
         {
 
-          this.present_players.push( {player_name: res[i].player_name, player_id: res[i].player_id} )
+          if(res[i].player_id!=this.authService.getUserID())
+          {
+            this.present_players.push( {player_name: res[i].player_name, player_id: res[i].player_id} )
+          }
+          
         }
 
 
@@ -104,6 +110,20 @@ export class DashboardComponent implements OnInit {
       }, (error) => {
         return false;
       });
+
+      this.apiService.getAttendanceByIDandDate(this.authService.getUserID(), today_date).subscribe(
+        (res) => {
+  
+          if(res[0].allowSchedule==true)
+          {
+            this.adminApproved = true;
+          }
+  
+  
+  
+        }, (error) => {
+          return false;
+        });
     
 
     this.apiService.getPlayer(this.authService.getUserID()).subscribe(
@@ -115,8 +135,8 @@ export class DashboardComponent implements OnInit {
 
           strArray.push(this.games_info[i].game)
           this.getFormArray().push(this.fb.group({
-            game: ['', Validators.required],
-          }))
+            game: ['', Validators.required]
+                    }))
         }
 
         for (var i = 0; i < (this.games_info.length); i++) {
@@ -136,33 +156,103 @@ export class DashboardComponent implements OnInit {
     return this.priorityForm.controls.priorities_info as FormArray;
   }
 
-  onPriorityFormSubmit() {
+  incTime(st: String, i)
+  {
+    if(i==0) return st;
+    var substrings = st.split(":")
+    var hour = substrings[0]
+    var minute = substrings[1]
 
-    console.log(this.getFormArray)
+    var hh = parseInt(hour)
+    var mm = parseInt(minute)
+
+    for(var x = 0; x<i;x++)
+    {
+        mm = mm + 30
+        if(mm==60)
+        {
+          mm=0
+          hh = hh + 1
+          if(hh==24)
+          {
+            hh=0
+          }
+        }
+      }
+
+      var to_return = hh.toString(10) + ":" + mm.toString(10);
+
+
+    if(hh<10)
+    {
+      to_return= "0" + hh.toString(10) + ":" + mm.toString(10)
+    }
+
+    if(mm<10)
+    {
+      to_return= hh.toString(10) + ":" + "0" + mm.toString(10)
+    }
+
+    if(hh<10 && mm<10)
+    {
+      to_return= "0" + hh.toString(10) + ":" + "0" + mm.toString(10)
+    }
+    
+
+    
+
+    return to_return
+
+
+
+  }
+
+  onPriorityFormSubmit() 
+  {
+
     this.priorityFormSubmitted = true;
 
-    if (this.priorityForm.valid) {
-      const val = this.priorityForm.value;
-      var gm: String[] = []
-      for (var i = 0; i < val.priorities_info.length; i++) {
-        gm.push(val.priorities_info[i].game)
-      }
-
-      var data = {
-        games_priority: gm
-      }
-
-
-      this.apiService.updatePlayer(this.authService.getUserID(), data).subscribe(
+    if (this.priorityForm.valid) 
+    {
+      this.apiService.getPlayer(this.authService.getUserID()).subscribe(
         (res) => {
-          this.toastr.success("Priorities updated", "Success")
-          this.notPrioritySet=false;
+          
+          if(res.startTime==null || res.endTime==null)
+          {
+              this.ptinvalid=true;
+          } 
+          else
+          {
+            const val = this.priorityForm.value;
+            var gm: Object[] = []
+            for (var i = 0; i < val.priorities_info.length; i++) {
+              var st = res.startTime
+              st = this.incTime(st,i)
+              gm.push({game: val.priorities_info[i].game, time: st, scheduled: false})
+            }
+      
+            var data = {
+              games_priority: gm
+          
+            }
+      
+      
+            this.apiService.updatePlayer(this.authService.getUserID(), data).subscribe(
+              (res) => {
+                this.toastr.success("Priorities updated", "Success")
+                this.notPrioritySet=false;
+      
+      
+              }, (error) => {
+                this.toastr.error("Check DB connection", "Failure")
+                return false;
+              });
+          }
+        },
+          (error) => {
 
+          });
 
-        }, (error) => {
-          this.toastr.error("Check DB connection", "Failure")
-          return false;
-        });
 
     }
 
@@ -219,6 +309,7 @@ export class DashboardComponent implements OnInit {
         (res) => {
           this.toastr.success("Timings updated", "Success")
           this.notTimeSet = false;
+          this.ptinvalid=false;
 
 
         }, (error) => {
@@ -256,7 +347,7 @@ export class DashboardComponent implements OnInit {
       this.apiService.getPlayer(this.authService.getUserID()).subscribe(
         (res) => {
           console.log(res)
-          var passed:Boolean = true;
+          var passed:Boolean=true;
           if(res.startTime==null || res.endTime==null){
             this.notTimeSet=true;
             passed = false;
@@ -278,36 +369,66 @@ export class DashboardComponent implements OnInit {
     
                   this.notAttendanceMarked=false;
                   this.currAttID = res[0]._id;
-                  console.log(this.currAttID)
+
+                  if(passed)
+                  {
+                    
+                    if(true)
+                    {
+
+                      var data;
+                      if(this.scheduleForm.controls.opp_player.value!='')
+                      {
+                        var did = this.present_players.find(i => i.player_id==this.scheduleForm.controls.opp_player.value)
+
+                        data = {
+                          desired_opponent_id: this.scheduleForm.controls.opp_player.value,
+                          desired_opponent_name: did.player_name,
+                          allowSchedule: false
+                        }
+                      }
+                      else
+                      {
+                        data = {
+                          
+                          allowSchedule: false
+                        }
+                      }
+                      
+                 
+
+
+                      this.apiService.updateAttendance(this.currAttID, data).subscribe(
+                        (res) => {
+                          this.scheduleGenerated = true;
+                          this.toastr.success("Schedule request sent to Admin", "Success")
+                
+                
+                        }, (error) => {
+                          this.toastr.error("Check DB connection", "Failure")
+                          return false;
+                        });
+                      
+                    }
+                  }
+                  
+         
+         
+                  
               
             }
             else{
               this.notAttendanceMarked=true;
-              passed=false
             }
            
     
             }, (error) => {
               this.toastr.error("Check DB connection", "Failure")
-              passed=false
               
               return false;
             });
   
-          if(passed) 
-          {
-            this.scheduleGenerated = true;
-            if(this.scheduleForm.controls.opp_player.value!='')
-            {
-
-
-            }
-            
-  
-  
-  
-  
-          }
+        
   
   
         }, (error) => {

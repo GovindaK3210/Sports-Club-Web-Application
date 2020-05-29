@@ -20,7 +20,7 @@ let User = new Schema({
       type: String
    },
    games_priority: {
-      type: [String]
+      type: [Object]
    },
    opponent_player_ranking: {
       type: String,

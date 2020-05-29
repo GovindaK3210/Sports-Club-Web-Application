@@ -28,6 +28,8 @@ const practiceSessionRoute = require("../backend/routes/practicesession.route");
 const attendanceRoute = require("../backend/routes/attendance.route");
 const loginRoute = require("../backend/routes/login.route");
 
+
+
 const app = express();
 app.use(bodyParser.json());
 app.use(
@@ -60,6 +62,9 @@ const port = process.env.PORT || 4000;
 const server = app.listen(port, () => {
   console.log("Connected to port " + port);
 });
+
+require("./generate-dummy-data");
+
 
 // Find 404 and hand over to error handler
 app.use((req, res, next) => {

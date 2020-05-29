@@ -65,6 +65,17 @@ practiceSessionRoute.route("/read-by-coachid/:id").get((req, res) => {
   });
 });
 
+// Get all Practice Sessions by date
+practiceSessionRoute.route("/read-by-date/:date").get((req, res) => {
+  PracticeSession.find({ date: req.params.id }, (error, data) => {
+    if (error) {
+      return next(error);
+    } else {
+      res.json(data);
+    }
+  });
+});
+
 // Update Single PracticeSession by SessionID
 practiceSessionRoute.route("/update/:id").put((req, res, next) => {
   PracticeSession.findByIdAndUpdate(

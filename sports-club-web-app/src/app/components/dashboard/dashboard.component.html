@@ -114,6 +114,13 @@
           Please choose all priorities
         </div>
 
+        <div
+          class="text-danger"
+          *ngIf="priorityFormSubmitted && ptinvalid"
+        >
+          Please set your timings in above panel first
+        </div>
+
         <button type="submit" class="btn btn-primary custom_blue_bg col-5">
           Set
         </button>
@@ -144,7 +151,7 @@
   </div>
 </div>
 
-<div class="container bg-dark text-light rounded mt-2 pt-4 pb-4 pl-5 pr-5">
+<div class="container bg-dark text-light rounded mt-2 pt-4 pb-4 pl-5 pr-5 mb-3">
   <div class="row">
     <div class="col-8">
       <p class="font-weight-bold h5">SCHEDULE</p>
@@ -185,8 +192,17 @@
                        
                 </div>
                 <br/>
-                  <button type="submit" class="btn btn-primary custom_blue_bg col-3">Generate</button>
+                <div *ngIf="!adminApproved">
+                    <button type="submit" class="btn btn-primary custom_blue_bg col-3">Generate</button>
+                </div>
+                  
                   <br/>
+
+                  <div *ngIf="adminApproved">
+                      <div class="text-success">
+                          Admin has approved your schedule. Please see "sessions" page to view your games for today.
+                      </div>
+                  </div>
 
                   <div
                   class="text-danger"
@@ -215,8 +231,8 @@
                 >
                 Please mark your attendance first
                 </div>
-                <br/>
-                <div *ngIf="scheduleGenerated" class="text-success">
+           
+                <div *ngIf="scheduleGenerated" class="text-primary">
                     Awaiting admin approval. 
                 </div>
             
