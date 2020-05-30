@@ -24,6 +24,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { CoachDashboardComponent } from './components/coach-dashboard/coach-dashboard.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { DocumentationComponent } from './components/documentation/documentation.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { AdminDashboardComponent } from './components/admin-dashboard/admin-dash
     DashboardComponent,
     SessionsInfoComponent,
     CoachDashboardComponent,
-    AdminDashboardComponent
+    AdminDashboardComponent,
+    DocumentationComponent
   ],
   imports: [
     BrowserModule,

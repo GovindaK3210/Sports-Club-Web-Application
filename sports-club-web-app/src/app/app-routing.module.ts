@@ -12,6 +12,9 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SessionsInfoComponent } from './components/sessions-info/sessions-info.component';
 import { CoachDashboardComponent} from "./components/coach-dashboard/coach-dashboard.component"
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { DocumentationComponent } from './components/documentation/documentation.component';
+
+
 
 
 const routes: Routes = [
@@ -24,7 +27,8 @@ const routes: Routes = [
   { path: 'not-authorized', component: NotAuthorizedComponent},
   { path: 'sessions-info', component: SessionsInfoComponent, canActivate: [AuthGuard]},
   { path: 'coach-dashboard', component: CoachDashboardComponent, canActivate: [AuthGuard]},
-  { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [AuthGuard]}
+  { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [AuthGuard]},
+  { path: 'documentation', component: DocumentationComponent},
 ];
 
 @NgModule({

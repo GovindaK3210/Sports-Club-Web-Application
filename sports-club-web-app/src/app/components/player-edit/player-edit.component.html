@@ -1,17 +1,17 @@
 <div class="row justify-content-center">
     <div class="col-md-4 register-player">
       <!-- form card register -->
-      <div class="card card-outline-secondary">
-        <div class="card-header">
-          <h3 class="mb-0">Edit Player</h3>
+      <div class="card card-outline-secondary custom_blue_bg text-light mt-5">
+        <div class="card-header ">
+          <h3 class="mb-0" >Edit Player</h3>
         </div>
-        <div class="card-body">
+        <div class="card-body bg-dark text-light">
           <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
  
             <div class="form-group">
               <label for="inputName">Name</label>
               <input class="form-control" type="text" formControlName="name">
-              <div class="invalid-feedback" *ngIf="submitted && myForm.name.errors?.required">
+              <div class="text-danger" *ngIf="submitted && myForm.name.errors?.required">
                 Name is required.
               </div>
             </div>
@@ -19,36 +19,23 @@
               <label for="inputEmail3">Email</label>
               <input class="form-control" type="text" formControlName="email">
               <!-- error -->
-              <div class="invalid-feedback" *ngIf="submitted && myForm.email.errors?.required">
+              <div class="text-danger" *ngIf="submitted && myForm.email.errors?.required">
                 Enter your email.
               </div>
-              <div class="invalid-feedback" *ngIf="submitted && myForm.email.errors?.pattern">
+              <div class="text-danger" *ngIf="submitted && myForm.email.errors?.pattern">
                 Enter valid email.
               </div>
             </div>
- 
-            <div class="form-group">
-              <label for="inputPassword3">Role</label>
-              <select class="custom-select form-control" (change)="updateProfile($event.target.value)"
-                formControlName="role">
-                <option value="">Choose...</option>
-                <option *ngFor="let playerProfile of PlayerProfile" value="{{playerProfile}}">{{playerProfile}}
-                </option>
-              </select>
-              <!-- error -->
-              <div class="invalid-feedback" *ngIf="submitted && myForm.role.errors?.required">
-                Choose role.
-              </div>
-            </div>
+
  
             <div class="form-group">
               <label for="inputVerify3">Mobile No</label>
               <input class="form-control" type="text" formControlName="phoneNumber">
               <!-- error -->
-              <div class="invalid-feedback" *ngIf="submitted && myForm.phoneNumber.errors?.required">
+              <div class="text-danger" *ngIf="submitted && myForm.phoneNumber.errors?.required">
                 Enter your phone number.
               </div>
-              <div class="invalid-feedback" *ngIf="submitted && myForm.phoneNumber.errors?.pattern">
+              <div class="text-danger" *ngIf="submitted && myForm.phoneNumber.errors?.pattern">
                 Enter Numbers Only
               </div>
             </div>

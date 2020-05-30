@@ -8,13 +8,27 @@ let User = require('../models/User');
 
 // Add User
 userRoute.route('/create').post((req, res, next) => {
-  User.create(req.body, (error, data) => {
+  User.find({email:req.body.email},(error, data) => {
     if (error) {
       return next(error)
     } else {
-      res.json(data)
+      if(data.length==0)
+      {
+        User.create(req.body, (error, data) => {
+          if (error) {
+            return next(error)
+          } else {
+            res.json(data)
+          }
+        })
+      }
+      else{
+        return next(error)
+      }
+      
     }
   })
+  
 });
 
 

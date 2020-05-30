@@ -25,21 +25,17 @@ export class PlayerEditComponent implements OnInit {
   ngOnInit() {
     this.updatePlayer();
     let id = this.actRoute.snapshot.paramMap.get('id');
-    this.getPlayer(id);
+   
     this.editForm = this.fb.group({
       name: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
-      designation: ['', [Validators.required]],
       phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]+$')]]
     })
+
+    this.getPlayer(id);
   }
 
-  // Choose options with select-dropdown
-  updateProfile(e) {
-    this.editForm.get('designation').setValue(e, {
-      onlySelf: true
-    })
-  }
+ 
 
   // Getter to access form control
   get myForm() {
@@ -51,7 +47,7 @@ export class PlayerEditComponent implements OnInit {
       this.editForm.setValue({
         name: data['name'],
         email: data['email'],
-        role: data['role'],
+      
         phoneNumber: data['phoneNumber'],
       });
     });
@@ -61,7 +57,6 @@ export class PlayerEditComponent implements OnInit {
     this.editForm = this.fb.group({
       name: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
-      role: ['', [Validators.required]],
       phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]+$')]]
     })
   }
