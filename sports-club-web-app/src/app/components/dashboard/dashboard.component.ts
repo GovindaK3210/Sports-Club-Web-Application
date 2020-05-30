@@ -94,13 +94,21 @@ export class DashboardComponent implements OnInit {
 
     this.apiService.getAllAttendanceByDate(today_date).subscribe(
       (res) => {
-
+       
         for(var i=0;i<res.length;i++)
         {
-
+        
           if(res[i].player_id!=this.authService.getUserID())
           {
-            this.present_players.push( {player_name: res[i].player_name, player_id: res[i].player_id} )
+            if (!res[i].hasOwnProperty("allowSchedule") )
+            {
+              this.present_players.push( {player_name: res[i].player_name, player_id: res[i].player_id} )
+            }
+            else if(res[i].allowSchedule==false)
+            {
+              this.present_players.push( {player_name: res[i].player_name, player_id: res[i].player_id} )
+            }
+           
           }
           
         }
@@ -114,12 +122,16 @@ export class DashboardComponent implements OnInit {
       this.apiService.getAttendanceByIDandDate(this.authService.getUserID(), today_date).subscribe(
         (res) => {
   
-          if(res[0].allowSchedule==true)
+          if(res.length>0)
           {
-            this.adminApproved = true;
+            if(res[0].allowSchedule==true)
+            {
+              this.adminApproved = true;
+            }
           }
+          
   
-  
+
   
         }, (error) => {
           return false;
@@ -377,7 +389,7 @@ export class DashboardComponent implements OnInit {
                     {
 
                       var data;
-                      if(this.scheduleForm.controls.opp_player.value!='')
+                      if(this.scheduleForm.controls.opp_player.value!='' && this.scheduleForm.controls.chooser.value!="system")
                       {
                         var did = this.present_players.find(i => i.player_id==this.scheduleForm.controls.opp_player.value)
 
