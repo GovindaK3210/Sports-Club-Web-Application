@@ -20,54 +20,7 @@
   <table
     class="table table-bordered table-striped bg-dark text-light"
     *ngIf="Sessions?.length > 0"
-  >
-    <thead class="custom_blue_bg" [formGroup]="session_form">
-      <tr>
-        <th scope="col">Game</th>
-        <th scope="col">Game Court</th>
-        <th scope="col center">Coach Name</th>
-        <th scope="col">Player1 Name</th>
-        <!-- <th scope="col">Player1 Ranking</th> -->
-        <th scope="col">Player2 Name</th>
-        <!-- <th scope="col">Player2 Ranking</th> -->
-        <th scope="col center">Start Time</th>
-        <th scope="col center">End Time</th>
-        <!-- <th scope="col">Player 1 Score</th>
-        <th scope="col">Player 2 Score</th>
-        <th scope="col">Minutes Played</th>
-        <th scope="col">Assess</th> -->
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let session of Sessions; let i = index">
-        <td>{{ session.game }}</td>
-        <td>{{ session.game_court }}</td>
-        <td>{{ session.coach_name }}</td>
-        <td>{{ session.player1_name }}</td>
-        <!-- <td>{{session.ranking_player1}}</td> -->
-        <td>{{ session.player2_name }}</td>
-        <!-- <td>{{session.ranking_player2}}</td> -->
-        <td>{{ session.start_time }}</td>
-        <td>{{ session.end_time }}</td>
-        <!-- <td>
-          <input
-            class="form-control"
-            type="text"
-            formControlName="name"
-            [ngClass]="{
-              'is-invalid': submitted && myForm.name.errors?.required
-            }"
-          />
-        </td> -->
-      </tr>
-    </tbody>
-  </table>
-
-  <!-- Assessed History -->
-  <p class="font-weight-bold h4 text-light pt-3">ASSESSED HISTORY</p>
-  <table
-    class="table table-bordered table-striped bg-dark text-light"
-    *ngIf="Sessions?.length > 0"
+    [formGroup]="session_form"
   >
     <thead class="custom_blue_bg">
       <tr>
@@ -80,23 +33,104 @@
         <!-- <th scope="col">Player2 Ranking</th> -->
         <th scope="col center">Start Time</th>
         <th scope="col center">End Time</th>
-        <!-- <th scope="col">Player 1 Score</th>
+        <th scope="col">Player 1 Score</th>
         <th scope="col">Player 2 Score</th>
-        <th scope="col">Minutes Played</th>
-        <th scope="col">Modify</th> -->
+        <th scope="col">Assess</th>
       </tr>
     </thead>
-    <tbody>
-      <tr *ngFor="let session of Sessions; let i = index">
-        <td>{{ session.game }}</td>
-        <td>{{ session.game_court }}</td>
-        <td>{{ session.coach_name }}</td>
-        <td>{{ session.player1_name }}</td>
-        <!-- <td>{{session.ranking_player1}}</td> -->
-        <td>{{ session.player2_name }}</td>
-        <!-- <td>{{session.ranking_player2}}</td> -->
-        <td>{{ session.start_time }}</td>
-        <td>{{ session.end_time }}</td>
+    <tbody formArrayName="scoring_form_array">
+      <tr *ngFor="let session of Sessions; let i = index" formGroupName="{{ i }}">
+        <ng-container *ngIf="session.ranking_player1 == null" >
+          <td>{{ session.game }}</td>
+          <td>{{ session.game_court }}</td>
+          <td>{{ session.coach_name }}</td>
+          <td>{{ session.player1_name }}</td>
+          <!-- <td>{{session.ranking_player1}}</td> -->
+          <td>{{ session.player2_name }}</td>
+          <!-- <td>{{session.ranking_player2}}</td> -->
+          <td>{{ session.start_time }}</td>
+          <td>{{ session.end_time }}</td>
+          <td>
+            <input
+              class="form-control"
+              type="number"
+              formControlName="player1_score"
+            />
+          </td>
+          <td>
+            <input
+              class="form-control"
+              type="number"
+              formControlName="player2_score"
+            />
+          </td>
+          <td>
+            <button
+            type="button" class="btn btn-primary btn-sm" (click)="submitScore(i, session)"
+            >Submit</button>
+          </td>
+        </ng-container>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Assessed History -->
+  <p class="font-weight-bold h4 text-light">ASSESSED HISTORY</p>
+  <table
+    class="table table-bordered table-striped bg-dark text-light"
+    *ngIf="Sessions?.length > 0"
+    [formGroup]="session_form"
+  >
+    <thead class="custom_blue_bg">
+      <tr>
+        <th scope="col">Game</th>
+        <th scope="col">Game Court</th>
+        <th scope="col center">Coach Name</th>
+        <th scope="col">Player1 Name</th>
+        <!-- <th scope="col">Player1 Ranking</th> -->
+        <th scope="col">Player2 Name</th>
+        <!-- <th scope="col">Player2 Ranking</th> -->
+        <th scope="col center">Start Time</th>
+        <th scope="col center">End Time</th>
+        <th scope="col">Player 1 Score</th>
+        <th scope="col">Player 2 Score</th>
+        <th scope="col">Modify</th>
+      </tr>
+    </thead>
+    <tbody formArrayName="scoring_form_array">
+      <tr *ngFor="let session of Sessions; let i = index" formGroupName="{{ i }}">
+        <ng-container *ngIf="session.ranking_player1 != null">
+          <td>{{ session.game }}</td>
+          <td>{{ session.game_court }}</td>
+          <td>{{ session.coach_name }}</td>
+          <td>{{ session.player1_name }}</td>
+          <!-- <td>{{session.ranking_player1}}</td> -->
+          <td>{{ session.player2_name }}</td>
+          <!-- <td>{{session.ranking_player2}}</td> -->
+          <td>{{ session.start_time }}</td>
+          <td>{{ session.end_time }}</td>
+          <td>
+            <input
+              class="form-control"
+              type="number"
+              formControlName="player1_score"
+              placeholder="{{session.ranking_player1}}"
+            />
+          </td>
+          <td>
+            <input
+              class="form-control"
+              type="number"
+              formControlName="player2_score"
+              placeholder="{{session.ranking_player2}}"
+            />
+          </td>
+          <td>
+            <button
+            type="button" class="btn btn-primary btn-sm" (click)="submitScore(i, session)"
+            >Modify</button>
+          </td>
+        </ng-container>
       </tr>
     </tbody>
   </table>

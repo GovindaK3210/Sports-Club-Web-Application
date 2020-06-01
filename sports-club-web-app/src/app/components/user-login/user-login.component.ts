@@ -12,45 +12,45 @@ import { format } from 'util';
 })
 export class UserLoginComponent implements OnInit {
 
-  form:FormGroup;
+  form: FormGroup;
   public submitted: boolean;
 
-  constructor(private fb:FormBuilder, 
-    private authService: AuthService, 
+  constructor(private fb: FormBuilder,
+    private authService: AuthService,
     private router: Router) {
 
-          this.form = this.fb.group({
-            email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
-          password: ['',Validators.required]
-          });
-          this.submitted=false;
-          this.authService.logout();
-      }
+    this.form = this.fb.group({
+      email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
+      password: ['', Validators.required]
+    });
+    this.submitted = false;
+    this.authService.logout();
+  }
 
 
-      onSubmit() {
-        this.submitted=true;
-        const val = this.form.value;
-        if (val.email && val.password) {
-            this.authService.login(val.email, val.password)
-                .subscribe(
-                    (res) => {
-                        console.log("User is logged in");
-                        if (this.authService.getUserRole() === 'player')
-                          this.router.navigateByUrl('/player-dashboard');
-                        else if (this.authService.getUserRole() === 'coach')
-                          this.router.navigateByUrl("/coach-dashboard")
-                          else if (this.authService.getUserRole() === 'admin')
-                          this.router.navigateByUrl("/admin-dashboard")
-                    },
-                    (error) => {
-                      console.log(error);
-                      this.form.setErrors({ 'invalid': true });
+  onSubmit() {
+    this.submitted = true;
+    const val = this.form.value;
+    if (val.email && val.password) {
+      this.authService.login(val.email, val.password)
+        .subscribe(
+          (res) => {
+            console.log("User is logged in");
+            if (this.authService.getUserRole() === 'player')
+              this.router.navigateByUrl('/player-dashboard');
+            else if (this.authService.getUserRole() === 'coach')
+              this.router.navigateByUrl("/coach-dashboard")
+            else if (this.authService.getUserRole() === 'admin')
+              this.router.navigateByUrl("/admin-dashboard")
+          },
+          (error) => {
+            console.log(error);
+            this.form.setErrors({ 'invalid': true });
 
-                    }
-                );
-        }
+          }
+        );
     }
+  }
 
   ngOnInit(): void {
   }

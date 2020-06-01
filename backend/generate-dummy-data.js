@@ -88,7 +88,7 @@ User.create(
     User.create( 
         {
             _id: mongoose.Types.ObjectId('121841186077525354630397'),
-            name: "Abid Ali (Coach8)",
+            name: "Abid Waqar (Coach8)",
             email: "coach8@coach.com",
             role: "coach",
             password: "123",
