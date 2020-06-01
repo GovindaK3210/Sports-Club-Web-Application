@@ -10,11 +10,13 @@
           <th scope="col">Game Court</th>
           <th scope="col center">Coach Name</th>
           <th scope="col">Player1 Name</th>
-          <!-- <th scope="col">Player1 Ranking</th> -->
           <th scope="col">Player2 Name</th>
-          <!-- <th scope="col">Player2 Ranking</th> -->
+          <th scope="col">Player1 Ranking</th> 
+          <th scope="col">Player2 Ranking</th> 
           <th scope="col">Start Time</th>
           <th scope="col">End Time</th>
+          <th scope="col">Result</th>
+
         </tr>
       </thead>
       <tbody>
@@ -23,11 +25,18 @@
           <td>{{session.game_court}}</td>
           <td>{{session.coach_name}}</td>
           <td>{{session.player1_name}}</td>
-          <!-- <td>{{session.ranking_player1}}</td> -->
           <td>{{session.player2_name}}</td>
-          <!-- <td>{{session.ranking_player2}}</td> -->
+          <td *ngIf="session.hasOwnProperty('ranking_player1')">{{session.ranking_player1}}</td> 
+          <td *ngIf="!session.hasOwnProperty('ranking_player1')">Not Assigned</td> 
+          
+          <td *ngIf="session.hasOwnProperty('ranking_player2')">{{session.ranking_player2}}</td> 
+          <td *ngIf="!session.hasOwnProperty('ranking_player2')">Not Assigned</td> 
           <td>{{session.start_time}}</td>
           <td>{{session.end_time}}</td>
+          <td class="text-success" *ngIf="session.winner=='You Won'">{{session.winner}}</td>
+          <td class="text-danger" *ngIf="session.winner=='You Lost'">{{session.winner}}</td>
+          <td class="text-primary" *ngIf="session.winner=='Draw'">{{session.winner}}</td>
+          <td *ngIf="!session.winner">Not Available</td>
         </tr>
       </tbody>
     </table>

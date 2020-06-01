@@ -29,6 +29,7 @@ export class DashboardComponent implements OnInit {
 
   oppForm: FormGroup;
   currAttID: String;
+  gameTimingsArray: String[]=[];
 
   scheduleForm: FormGroup;
 
@@ -241,6 +242,7 @@ export class DashboardComponent implements OnInit {
               var st = res.startTime
               st = this.incTime(st,i)
               gm.push({game: val.priorities_info[i].game, time: st, scheduled: false})
+              this.gameTimingsArray.push(st)
             }
       
             var data = {
@@ -312,6 +314,7 @@ export class DashboardComponent implements OnInit {
 
   onTimeFormSubmit() {
     this.timeFormSubmitted = true;
+    this.timeForm.controls.endTime.setValue("23:00");
     if (this.timeForm.valid) {
       const val = this.timeForm.value;
       console.log(val.startTime);
@@ -322,6 +325,7 @@ export class DashboardComponent implements OnInit {
           this.toastr.success("Timings updated", "Success")
           this.notTimeSet = false;
           this.ptinvalid=false;
+          this.gameTimingsArray=[];
 
 
         }, (error) => {

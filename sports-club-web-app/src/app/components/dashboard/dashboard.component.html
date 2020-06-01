@@ -50,10 +50,7 @@
           <label>Start Time: &nbsp;&nbsp;</label>
           <input type="time" name="startTime" formControlName="startTime" />
         </div>
-        <div class="form-group">
-          <label>End Time: &nbsp;&nbsp;&nbsp;</label>
-          <input type="time" name="endTime" formControlName="endTime" />
-        </div>
+  
 
         <div
           class="text-danger"
@@ -104,6 +101,7 @@
                 >{{ name }}
               </option>
             </select>
+            <span class="text-warning" *ngIf="gameTimingsArray.length>0">&nbsp;&nbsp;{{gameTimingsArray[i]}}</span>
             <br />
             <br />
           </div>

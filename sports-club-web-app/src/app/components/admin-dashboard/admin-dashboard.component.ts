@@ -225,10 +225,8 @@ getMultipleDesiredPlayers(): Observable<Array<any>>  {
             
             (desired_players) => {
 
-              console.log("here1")
             if(desired_players!=null)
             {
-              console.log("here2")
 
             
 
@@ -329,7 +327,19 @@ getMultipleDesiredPlayers(): Observable<Array<any>>  {
                                 
                                 game1.scheduled = true;
                                 game2.scheduled = true;
+
+
                                 this.createSession(data1);
+
+                                var po = list.find(obj => obj.player._id==obj_m.desired_opponent_id)
+                                if(po)
+                                {
+                                  var pm = po.player.games_priority.find(gm => gm.game==game2.game && gm.time==game2.time)
+                                  if(pm)
+                                  {
+                                    pm.scheduled=true;
+                                  }
+                                }
                                 
                            
      
@@ -358,7 +368,9 @@ getMultipleDesiredPlayers(): Observable<Array<any>>  {
                     {
                       for(let game2 of obj_s.player.games_priority)
                       {
-                        if((game1.game==game2.game && game1.time==game2.time) && !(game1.scheduled || game2.scheduled))
+                      
+
+                        if(game1.game==game2.game && game1.time==game2.time && !game1.scheduled && !game2.scheduled)
                         {
 
                  

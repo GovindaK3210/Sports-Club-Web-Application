@@ -25,8 +25,9 @@
 
             <div *ngIf="pending_approvals.length!=0">
                 <div *ngFor="let approval of pending_approvals; let i = index">
-                        {{i+1}}. &nbsp;Player Name: <b class="text-success">{{approval.player_name}}</b> &nbsp; Desired Opponent: <b class="text-success">{{approval.desired_opponent_name}}</b>
-
+                        {{i+1}}. &nbsp;Player Name: <b class="text-success">{{approval.player_name}}</b> &nbsp; 
+                        Desired Opponent: <b *ngIf="approval.desired_opponent_name=='system'" class="text-success">System-assigned player</b>
+                        <b *ngIf="approval.desired_opponent_name!='system'" class="text-warning">{{approval.desired_opponent_name}}</b>
 
                 </div>
 
@@ -63,7 +64,9 @@
                     <br />
 
                     <div *ngFor="let approval of all_approvals; let i = index">
-                            {{i+1}}. &nbsp;Player Name: <b class="text-success">{{approval.player_name}}</b> &nbsp; Desired Opponent: <b class="text-success">{{approval.desired_opponent_name}}</b>
+                            {{i+1}}. &nbsp;Player Name: <b class="text-success">{{approval.player_name}}</b> &nbsp; 
+                            Desired Opponent: <b *ngIf="approval.desired_opponent_name=='system'" class="text-success">System-assigned player</b>
+                        <b *ngIf="approval.desired_opponent_name!='system'" class="text-warning">{{approval.desired_opponent_name}}</b>
     
     
                     </div>
