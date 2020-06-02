@@ -19,5 +19,5 @@ To run the project project follow the following steps:
 4. Now open an other command prompt and run the following commands:
    1. cd Sports-Club-Web-Application\backend
    2. npm install (to install all the dependencies)
-   3. nodemon server
+   3. npm start
 5. Now open http://localhost:4200/ and use the app :)
